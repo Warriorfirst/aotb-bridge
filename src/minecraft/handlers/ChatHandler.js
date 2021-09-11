@@ -35,51 +35,76 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isJoinMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[0]
 
       return this.minecraft.broadcastHeadedEmbed({
         message: `${user} joined the guild!`,
         title: `Member Joined`,
         icon: `https://mc-heads.net/avatar/${user}`,
         color: '47F049',
-        destination: 'Both'
+        destination: 'Both',
       })
     }
 
     if (this.isLeaveMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[0]
 
       return this.minecraft.broadcastHeadedEmbed({
         message: `${user} left the guild!`,
         title: `Member Left`,
         icon: `https://mc-heads.net/avatar/${user}`,
         color: 'F04947',
-        destination: 'Both'
+        destination: 'Both',
       })
     }
 
     if (this.isKickMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[0]
 
       return this.minecraft.broadcastHeadedEmbed({
         message: `${user} was kicked from the guild!`,
         title: `Member Kicked`,
         icon: `https://mc-heads.net/avatar/${user}`,
         color: 'F04947',
-        destination: 'Both'
+        destination: 'Both',
       })
     }
 
     if (this.isPromotionMessage(message)) {
-      let username = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
-      let newRank = message.replace(/\[(.*?)\]/g, '').trim().split(' to ').pop().trim()
+      let username = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[0]
+      let newRank = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(' to ')
+        .pop()
+        .trim()
 
       return this.minecraft.broadcastCleanEmbed({ message: `${username} was promoted to ${newRank}`, color: '47F049', destination: 'Both' })
     }
 
     if (this.isDemotionMessage(message)) {
-      let username = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[0]
-      let newRank = message.replace(/\[(.*?)\]/g, '').trim().split(' to ').pop().trim()
+      let username = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[0]
+      let newRank = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(' to ')
+        .pop()
+        .trim()
 
       return this.minecraft.broadcastCleanEmbed({ message: `${username} was demoted to ${newRank}`, color: 'F04947', destination: 'Both' })
     }
@@ -99,17 +124,24 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isIncorrectUsage(message)) {
-      return this.minecraft.broadcastCleanEmbed({ message: message.split("'").join("`"), color: 'DC143C', destination: 'Officer' })
+      return this.minecraft.broadcastCleanEmbed({ message: message.split("'").join('`'), color: 'DC143C', destination: 'Officer' })
     }
 
     if (this.isOnlineInvite(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[2]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[2]
 
       return this.minecraft.broadcastCleanEmbed({ message: `${user} was invited to the guild!`, color: '47F049', destination: 'Officer' })
     }
 
     if (this.isOfflineInvite(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[6].match(/\w+/g)[0]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[6]
+        .match(/\w+/g)[0]
 
       return this.minecraft.broadcastCleanEmbed({ message: `${user} was offline invited to the guild!`, color: '47F049', destination: 'Officer' })
     }
@@ -119,7 +151,10 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isGuildMuteMessage(message)) {
-      let time = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[7]
+      let time = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[7]
 
       return this.minecraft.broadcastCleanEmbed({ message: `Guild Chat has been muted for ${time}`, color: 'F04947', destination: 'Both' })
     }
@@ -129,14 +164,24 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isUserMuteMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[3].replace(/[^\w]+/g, '')
-      let time = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[5]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[3]
+        .replace(/[^\w]+/g, '')
+      let time = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[5]
 
       return this.minecraft.broadcastCleanEmbed({ message: `${user} has been muted for ${time}`, color: 'F04947', destination: 'Officer' })
     }
 
     if (this.isUserUnmuteMessage(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(/ +/g)[3]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(/ +/g)[3]
 
       return this.minecraft.broadcastCleanEmbed({ message: `${user} has been unmuted!`, color: '47F049', destination: 'Officer' })
     }
@@ -150,13 +195,19 @@ class StateHandler extends EventHandler {
     }
 
     if (this.isNotInGuild(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(' ')[0]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(' ')[0]
 
       return this.minecraft.broadcastCleanEmbed({ message: `${user} is not in the guild.`, color: 'DC143C', destination: 'Officer' })
     }
 
     if (this.isLowestRank(message)) {
-      let user = message.replace(/\[(.*?)\]/g, '').trim().split(' ')[0]
+      let user = message
+        .replace(/\[(.*?)\]/g, '')
+        .trim()
+        .split(' ')[0]
 
       return this.minecraft.broadcastCleanEmbed({ message: `${user} is already the lowest guild rank!`, color: 'DC143C', destination: 'Officer' })
     }
@@ -275,7 +326,20 @@ class StateHandler extends EventHandler {
   }
 
   isNoPermission(message) {
-    return (message.includes('You must be the Guild Master to use that command!') || message.includes('You do not have permission to use this command!') || message.includes("I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.") || message.includes("You cannot mute a guild member with a higher guild rank!") || message.includes("You cannot kick this player!") || message.includes("You can only promote up to your own rank!") || message.includes("You cannot mute yourself from the guild!") || message.includes("is the guild master so can't be demoted!") || message.includes("is the guild master so can't be promoted anymore!")) && !message.includes(":")
+    return (
+      (message.includes('You must be the Guild Master to use that command!') ||
+        message.includes('You do not have permission to use this command!') ||
+        message.includes(
+          "I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error."
+        ) ||
+        message.includes('You cannot mute a guild member with a higher guild rank!') ||
+        message.includes('You cannot kick this player!') ||
+        message.includes('You can only promote up to your own rank!') ||
+        message.includes('You cannot mute yourself from the guild!') ||
+        message.includes("is the guild master so can't be demoted!") ||
+        message.includes("is the guild master so can't be promoted anymore!")) &&
+      !message.includes(':')
+    )
   }
 
   isIncorrectUsage(message) {
@@ -287,11 +351,21 @@ class StateHandler extends EventHandler {
   }
 
   isOfflineInvite(message) {
-    return message.includes('You sent an offline invite to') && message.includes('They will have 5 minutes to accept once they come online!') && !message.includes(':')
+    return (
+      message.includes('You sent an offline invite to') &&
+      message.includes('They will have 5 minutes to accept once they come online!') &&
+      !message.includes(':')
+    )
   }
 
   isFailedInvite(message) {
-    return (message.includes('is already in another guild!') || message.includes('You cannot invite this player to your guild!') || (message.includes("You've already invited") && message.includes("to your guild! Wait for them to accept!")) || message.includes('is already in your guild!')) && !message.includes(':')
+    return (
+      (message.includes('is already in another guild!') ||
+        message.includes('You cannot invite this player to your guild!') ||
+        (message.includes("You've already invited") && message.includes('to your guild! Wait for them to accept!')) ||
+        message.includes('is already in your guild!')) &&
+      !message.includes(':')
+    )
   }
 
   isUserMuteMessage(message) {

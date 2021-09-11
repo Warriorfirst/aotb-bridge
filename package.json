@@ -4,7 +4,8 @@
   "description": "A Hypixel guild chat and Discord chat bridge",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "format": "prettier . --write"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,17 @@
     "chalk": "^4.1.0",
     "discord.js": "^13.1.0",
     "mineflayer": "^3.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.4.0"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "semi": false,
+    "arrowParens": "avoid",
+    "printWidth": 160,
+    "endOfLine": "crlf"
   }
 }

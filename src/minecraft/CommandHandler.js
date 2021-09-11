@@ -24,8 +24,7 @@ class CommandHandler {
     let args = message.slice(this.prefix.length).trim().split(/ +/)
     let commandName = args.shift().toLowerCase()
 
-    let command = this.commands.get(commandName)
-      || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
+    let command = this.commands.get(commandName) || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
     if (!command) {
       return false

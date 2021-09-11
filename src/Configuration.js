@@ -18,7 +18,7 @@ class Configuration {
       officerChannel: null,
       commandRole: '',
       ownerId: '',
-      messageMode: 'bot'
+      messageMode: 'bot',
     },
   }
 
