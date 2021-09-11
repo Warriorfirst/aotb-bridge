@@ -24,13 +24,13 @@ class InteractionHandler {
 
       case 'execute':
         if (!this.isOwner(interaction.member)) {
-          return command.rejectNoPermission()
+          return command.rejectNoPermission(interaction)
         }
         break
 
       default:
         if (!this.isCommander(interaction.member)) {
-          return command.rejectNoPermission()
+          return command.rejectNoPermission(interaction)
         }
         break
     }
