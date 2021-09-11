@@ -14,13 +14,13 @@ class RelogCommand extends DiscordCommand {
 
   /** @param {import('discord.js').CommandInteraction} interaction */
   onCommand(interaction) {
-    const time = interaction.options.get('time').value
+    const time = interaction.options.get('time')
 
     if (!time) {
       return this.relogWithDelay(interaction)
     }
 
-    delay = Math.min(Math.max(delay, 5), 300)
+    const delay = Math.min(Math.max(time.value, 5), 300)
 
     return this.relogWithDelay(interaction, delay)
   }
