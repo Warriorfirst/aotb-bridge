@@ -4,17 +4,23 @@ class KickCommand extends DiscordCommand {
   constructor(discord) {
     super(discord)
 
+    /** @type {string} */
     this.name = 'kick'
-    this.aliases = ['k']
+    /** @type {string} */
     this.description = 'Kicks the given user from the guild'
+    /** @type {import('discord.js').ApplicationCommandOptionData[]} */
+    this.options = [{ name: 'user', description: `The user to ${this.name}`, required: true, type: 'STRING' }]
   }
 
-  onCommand(message) {
-    let args = this.getArgs(message)
-    let user = args.shift()
-    let reason = args.join(' ')
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  onCommand(interaction) {
+    const user = interaction.options.get('user').value
 
-    this.sendMinecraftMessage(`/g kick ${user ? user : ''} ${reason ? reason : ''}`)
+    const command = `/g kick ${user}`
+
+    this.sendMinecraftMessage(command)
+
+    return interaction.reply({ content: `\`${command}\` has been executed.`, ephemeral: true })
   }
 }
 

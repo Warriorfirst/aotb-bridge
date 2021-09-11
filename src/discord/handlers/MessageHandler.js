@@ -1,15 +1,10 @@
 class MessageHandler {
-  constructor(discord, command) {
+  constructor(discord) {
     this.discord = discord
-    this.command = command
   }
 
   async onMessage(message) {
     if (!this.shouldBroadcastMessage(message)) {
-      return
-    }
-
-    if (this.command.handle(message)) {
       return
     }
 
@@ -61,7 +56,12 @@ class MessageHandler {
   }
 
   shouldBroadcastMessage(message) {
-    return !message.author.bot && (message.channel.id == this.discord.app.config.discord.guildChannel || message.channel.id == this.discord.app.config.discord.officerChannel) && message.content && message.content.length > 0
+    return (
+      !message.author.bot &&
+      (message.channel.id == this.discord.app.config.discord.guildChannel || message.channel.id == this.discord.app.config.discord.officerChannel) &&
+      message.content &&
+      message.content.length > 0
+    )
   }
 }
 

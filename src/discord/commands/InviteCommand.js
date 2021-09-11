@@ -4,16 +4,23 @@ class InviteCommand extends DiscordCommand {
   constructor(discord) {
     super(discord)
 
+    /** @type {string} */
     this.name = 'invite'
-    this.aliases = ['i', 'inv']
+    /** @type {string} */
     this.description = 'Invites the given user to the guild'
+    /** @type {import('discord.js').ApplicationCommandOptionData[]} */
+    this.options = [{ name: 'user', description: `The user to ${this.name}`, required: true, type: 'STRING' }]
   }
 
-  onCommand(message) {
-    let args = this.getArgs(message)
-    let user = args.shift()
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  onCommand(interaction) {
+    const user = interaction.options.get('user').value
 
-    this.sendMinecraftMessage(`/g invite ${user ? user : ''}`)
+    const command = `/g invite ${user}`
+
+    this.sendMinecraftMessage(command)
+
+    return interaction.reply({ content: `\`${command}\` has been executed.`, ephemeral: true })
   }
 }
 

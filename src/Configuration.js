@@ -18,7 +18,6 @@ class Configuration {
       officerChannel: null,
       commandRole: '',
       ownerId: '',
-      prefix: '!',
       messageMode: 'bot'
     },
   }
@@ -35,7 +34,6 @@ class Configuration {
     DISCORD_OFFICER_CHANNEL: val => (this.properties.discord.officerChannel = val),
     DISCORD_COMMAND_ROLE: val => (this.properties.discord.commandRole = val),
     DISCORD_OWNER_ID: val => (this.properties.discord.ownerId = val),
-    DISCORD_PREFIX: val => (this.properties.discord.prefix = val),
     MESSAGE_MODE: val => (this.properties.discord.messageMode = val),
   }
 

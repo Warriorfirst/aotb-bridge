@@ -6,16 +6,18 @@ class HelpCommand extends DiscordCommand {
   constructor(discord) {
     super(discord)
 
+    /** @type {string} */
     this.name = 'help'
-    this.aliases = ['h', 'info']
-    this.description = 'Shows this help menu'
+    /** @type {string} */
+    this.description = 'Shows the help menu'
   }
 
-  onCommand(message) {
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  onCommand(interaction) {
     let discordCommands = []
     let minecraftCommands = []
 
-    this.discord.messageHandler.command.commands.forEach(command => {
+    this.discord.interactionHandler.commands.forEach(command => {
       discordCommands.push(`\`${command.name}\`: ${command.description}`)
     })
 
@@ -23,38 +25,39 @@ class HelpCommand extends DiscordCommand {
       minecraftCommands.push(`\`${command.name}\`: ${command.description}`)
     })
 
-    message.channel.send({
-      embed: {
-        title: 'Help',
-        description: ['`< >` = Required arguments', '`[ ]` = Optional arguments'].join('\n'),
-        fields: [
-          {
-            name: 'Discord Commands',
-            value: discordCommands.join('\n')
+    return interaction.reply({
+      embeds: [
+        {
+          title: 'Help',
+          description: ['`< >` = Required arguments', '`[ ]` = Optional arguments'].join('\n'),
+          fields: [
+            {
+              name: 'Discord Commands',
+              value: discordCommands.join('\n'),
+            },
+            {
+              name: 'Minecraft Commands',
+              value: minecraftCommands.join('\n'),
+            },
+            {
+              name: `Info`,
+              value: [
+                'Prefix: `/`',
+                `Guild Channel: <#${this.discord.app.config.discord.guildChannel}>`,
+                `Officer Channel: <#${this.discord.app.config.discord.officerChannel}>`,
+                `Command Role: <@&${this.discord.app.config.discord.commandRole}>`,
+                `Version: \`${version}\``,
+              ].join('\n'),
+            },
+          ],
+          color: interaction.guild.me.displayHexColor,
+          footer: {
+            text: 'Made by Senither and neyoa ❤',
           },
-          {
-            name: 'Minecraft Commands',
-            value: minecraftCommands.join('\n')
-          },
-          {
-            name: `Info`,
-            value: [
-              `Prefix: \`${this.discord.app.config.discord.prefix}\``,
-              `Guild Channel: <#${this.discord.app.config.discord.guildChannel}>`,
-              `Officer Channel: <#${this.discord.app.config.discord.officerChannel}>`,
-              `Command Role: <@&${this.discord.app.config.discord.commandRole}>`,
-              `Version: \`${version}\``,
-            ].join('\n'),
-          }
-        ],
-        color: message.guild.me.displayHexColor,
-        footer: {
-          text: 'Made by Senither and neyoa ❤'
+          timestamp: new Date(),
         },
-        timestamp: new Date()
-      }
-    }).then(helpMessage => {
-      helpMessage.delete({ timeout: 30000 })
+      ],
+      ephemeral: true,
     })
   }
 }

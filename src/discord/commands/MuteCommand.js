@@ -4,17 +4,27 @@ class MuteCommand extends DiscordCommand {
   constructor(discord) {
     super(discord)
 
+    /** @type {string} */
     this.name = 'mute'
-    this.aliases = ['m']
+    /** @type {string} */
     this.description = 'Mutes the given user for a given amount of time'
+    /** @type {import('discord.js').ApplicationCommandOptionData[]} */
+    this.options = [
+      { name: 'user', description: `The user to ${this.name}`, required: true, type: 'STRING' },
+      { name: 'time', description: `The length of time to mute the user for`, required: true, type: 'STRING' },
+    ]
   }
 
-  onCommand(message) {
-    let args = this.getArgs(message)
-    let user = args.shift()
-    let time = args.shift()
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  onCommand(interaction) {
+    const user = interaction.options.get('user').value
+    const time = interaction.options.get('time').value
 
-    this.sendMinecraftMessage(`/g mute ${user ? user : ''} ${time ? time : ''}`)
+    const command = `/g mute ${user} ${time}`
+
+    this.sendMinecraftMessage(command)
+
+    return interaction.reply({ content: `\`${command}\` has been executed.`, ephemeral: true })
   }
 }
 

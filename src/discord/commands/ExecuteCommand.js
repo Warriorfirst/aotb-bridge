@@ -4,21 +4,21 @@ class ExecuteCommand extends DiscordCommand {
   constructor(discord) {
     super(discord)
 
+    /** @type {string} */
     this.name = 'execute'
-    this.aliases = ['exec', 'e']
+    /** @type {string} */
     this.description = 'Executes commands as the minecraft bot'
+    /** @type {import('discord.js').ApplicationCommandOptionData[]} */
+    this.options = [{ name: 'command', description: 'The command to execute.', required: true, type: 'STRING' }]
   }
 
-  onCommand(message) {
-    let args = this.getArgs(message).join(' ')
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  onCommand(interaction) {
+    const command = '/' + interaction.options.get('command').value
 
-    if (args.length == 0) {
-      return message.reply(`No command specified`)
-    }
+    this.sendMinecraftMessage(`/${command}`)
 
-    this.sendMinecraftMessage(`/${args}`)
-
-    message.reply(`\`/${args}\` has been executed`)
+    return interaction.reply({ content: `\`${command}\` has been executed.`, ephemeral: true })
   }
 }
 

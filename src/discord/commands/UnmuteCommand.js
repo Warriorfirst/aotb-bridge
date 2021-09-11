@@ -4,16 +4,23 @@ class SetRankCommand extends DiscordCommand {
   constructor(discord) {
     super(discord)
 
+    /** @type {string} */
     this.name = 'unmute'
-    this.aliases = ['um']
+    /** @type {string} */
     this.description = `Unmutes the specified user`
+    /** @type {import('discord.js').ApplicationCommandOptionData[]} */
+    this.options = [{ name: 'user', description: `The user to ${this.name}`, required: true, type: 'STRING' }]
   }
 
-  onCommand(message) {
-    let args = this.getArgs(message)
-    let user = args.shift()
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  onCommand(interaction) {
+    const user = interaction.options.get('user').value
 
-    this.sendMinecraftMessage(`/g unmute ${user ? user : ''}`)
+    const command = `/g unmute ${user}`
+
+    this.sendMinecraftMessage(command)
+
+    return interaction.reply({ content: `\`${command}\` has been executed.`, ephemeral: true })
   }
 }
 

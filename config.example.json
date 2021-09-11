@@ -15,7 +15,6 @@
     "officerChannel": "channelId",
     "commandRole": "roleId",
     "ownerId": "ownerId",
-    "prefix": "!",
     "messageMode": "bot"
   }
 }

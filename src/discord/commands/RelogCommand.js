@@ -4,33 +4,36 @@ class RelogCommand extends DiscordCommand {
   constructor(discord) {
     super(discord)
 
+    /** @type {string} */
     this.name = 'relog'
-    this.aliases = ['r']
+    /** @type {string} */
     this.description = 'Relogs the minecraft client after a given period of time'
+    /** @type {import('discord.js').ApplicationCommandOptionData[]} */
+    this.options = [{ name: 'time', description: 'Length of time to wait before relogging in seconds', type: 'NUMBER' }]
   }
 
-  onCommand(message) {
-    let args = this.getArgs(message)
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  onCommand(interaction) {
+    const time = interaction.options.get('time').value
 
-    if (args.length == 0) {
-      return this.relogWithDelay(message)
-    }
-
-    let delay = parseInt(args.pop())
-    if (isNaN(delay)) {
-      return message.reply('Relog delay must be a number between 5 and 300!')
+    if (!time) {
+      return this.relogWithDelay(interaction)
     }
 
     delay = Math.min(Math.max(delay, 5), 300)
 
-    return this.relogWithDelay(message, delay)
+    return this.relogWithDelay(interaction, delay)
   }
 
-  relogWithDelay(message, delay = 0) {
+  /** @param {import('discord.js').CommandInteraction} interaction */
+  relogWithDelay(interaction, delay = 0) {
     this.discord.app.minecraft.stateHandler.exactDelay = delay * 1000
     this.discord.app.minecraft.bot.quit('Relogging')
 
-    message.reply(`The Minecraft account have disconnected from the server! Reconnecting in ${delay == 0 ? 5 : delay} seconds.`)
+    return interaction.reply({
+      content: `The Minecraft account have disconnected from the server! Reconnecting in ${delay == 0 ? 5 : delay} seconds.`,
+      ephemeral: true,
+    })
   }
 }
 
