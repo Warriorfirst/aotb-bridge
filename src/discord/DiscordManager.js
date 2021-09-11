@@ -52,31 +52,40 @@ class DiscordManager extends CommunicationBridge {
     })
   }
 
+  /**
+   * @param {string} username
+   * @param {string} message
+   * @param {import('discord.js').Webhook} webhook
+   */
   sendWebhookMessage(username, message, webhook) {
     message = message.replace(/@/g, '') // Stop pinging @everyone or @here
-    webhook.send(message, { username: username, avatarURL: 'https://www.mc-heads.net/avatar/' + username })
+    webhook.send({
+      username: username,
+      avatarURL: 'https://www.mc-heads.net/avatar/' + username,
+      content: message,
+    })
   }
 
-  sendEvent(message, destination) {
+  sendEvent(embed, destination) {
     switch (destination.toLowerCase()) {
       case 'guild':
         this.app.discord.client.channels.fetch(this.app.config.discord.guildChannel).then(channel => {
-          channel.send({ content: message })
+          channel.send({ embeds: [embed] })
         })
         break
 
       case 'officer':
         this.app.discord.client.channels.fetch(this.app.config.discord.officerChannel).then(channel => {
-          channel.send({ content: message })
+          channel.send({ embeds: [embed] })
         })
         break
 
       case 'both':
         this.app.discord.client.channels.fetch(this.app.config.discord.guildChannel).then(channel => {
-          channel.send({ content: message })
+          channel.send({ embeds: [embed] })
         })
         this.app.discord.client.channels.fetch(this.app.config.discord.officerChannel).then(channel => {
-          channel.send({ content: message })
+          channel.send({ embeds: [embed] })
         })
         break
     }
@@ -119,10 +128,8 @@ class DiscordManager extends CommunicationBridge {
 
     this.sendEvent(
       {
-        embed: {
-          color: color,
-          description: message,
-        },
+        color: color,
+        description: message,
       },
       destination
     )
@@ -133,14 +140,12 @@ class DiscordManager extends CommunicationBridge {
 
     this.sendEvent(
       {
-        embed: {
-          color: color,
-          author: {
-            name: title,
-            icon_url: icon,
-          },
-          description: message,
+        color: color,
+        author: {
+          name: title,
+          icon_url: icon,
         },
+        description: message,
       },
       destination
     )
@@ -153,13 +158,11 @@ class DiscordManager extends CommunicationBridge {
       case 'bot':
         this.sendEvent(
           {
-            embed: {
-              color: color,
-              timestamp: new Date(),
-              author: {
-                name: `${username} ${message}`,
-                icon_url: 'https://www.mc-heads.net/avatar/' + username,
-              },
+            color: color,
+            timestamp: new Date(),
+            author: {
+              name: `${username} ${message}`,
+              icon_url: 'https://www.mc-heads.net/avatar/' + username,
             },
           },
           'Guild'
