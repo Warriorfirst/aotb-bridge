@@ -14,11 +14,11 @@ class ExecuteCommand extends DiscordCommand {
 
   /** @param {import('discord.js').CommandInteraction} interaction */
   onCommand(interaction) {
-    const command = '/' + interaction.options.get('command').value
+    const command = interaction.options.get('command').value
 
     this.sendMinecraftMessage(`/${command}`)
 
-    return interaction.reply({ content: `\`${command}\` has been executed.`, ephemeral: true })
+    return interaction.reply({ content: `\`/${command}\` has been executed.`, ephemeral: true })
   }
 }
 
