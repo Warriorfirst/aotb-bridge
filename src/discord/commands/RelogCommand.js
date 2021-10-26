@@ -32,7 +32,6 @@ class RelogCommand extends DiscordCommand {
 
     return interaction.reply({
       content: `The Minecraft account have disconnected from the server! Reconnecting in ${delay == 0 ? 5 : delay} seconds.`,
-      ephemeral: true,
     })
   }
 }

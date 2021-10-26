@@ -38,7 +38,6 @@ class DiscordCommand {
           color: 'DC143C',
         },
       ],
-      ephemeral: true,
     })
   }
 

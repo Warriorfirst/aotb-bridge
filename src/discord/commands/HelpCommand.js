@@ -57,7 +57,6 @@ class HelpCommand extends DiscordCommand {
           timestamp: new Date(),
         },
       ],
-      ephemeral: true,
     })
   }
 }

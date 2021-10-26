@@ -20,7 +20,7 @@ class InviteCommand extends DiscordCommand {
 
     this.sendMinecraftMessage(command)
 
-    return interaction.reply({ content: `\`${command}\` has been executed.`, ephemeral: true })
+    return interaction.reply({ content: `\`${command}\` has been executed.` })
   }
 }
 
