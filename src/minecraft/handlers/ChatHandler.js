@@ -12,6 +12,40 @@ class StateHandler extends EventHandler {
     this.bot = bot
 
     this.bot.on('message', (...args) => this.onMessage(...args))
+    this.bot.on('guildChatMessage', (...args) => this.onGuildMessage(...args))
+    this.bot.on('officerChatMessage', (...args) => this.onOfficerMessage(...args))
+  }
+
+  onGuildMessage(message, { username, guildRank }) {
+    if (this.isMessageFromBot(username)) {
+      return
+    }
+
+    if (this.command.handle(username, message)) {
+      return
+    }
+
+    guildRank = guildRank ?? 'Member'
+
+    message = message.replace(/@*/g, '')
+
+    return this.minecraft.broadcastGuildMessage({ username, message, guildRank })
+  }
+
+  onOfficerMessage(message, { username, guildRank }) {
+    if (this.isMessageFromBot(username)) {
+      return
+    }
+
+    if (this.command.handle(username, message)) {
+      return
+    }
+
+    guildRank = guildRank ?? 'Member'
+
+    // message = message.replace(/@*/g, '') // Allow staff to ping everyone/here in officer chat discord channel
+
+    return this.minecraft.broadcastOfficerMessage({ username, message, guildRank })
   }
 
   onMessage(event) {
@@ -228,48 +262,6 @@ class StateHandler extends EventHandler {
 
     if (!(this.isGuildMessage(message) || this.isOfficerMessage(message))) {
       return
-    }
-
-    let parts = message.split(':')
-    let group = parts.shift().trim()
-    let hasRank = group.endsWith(']')
-    let userParts = group.split(' ')
-
-    let username = userParts[userParts.length - (hasRank ? 2 : 1)]
-
-    if (this.isMessageFromBot(username)) {
-      return
-    }
-
-    const playerMessage = parts.join(':').trim()
-    if (playerMessage.length == 0 || this.command.handle(username, playerMessage)) {
-      return
-    }
-
-    let guildRank = userParts[userParts.length - 1].replace(/[\[\]]/g, '')
-
-    if (guildRank == username) {
-      guildRank = 'Member'
-    }
-
-    if (playerMessage == '@') {
-      return
-    }
-
-    if (this.isGuildMessage(message)) {
-      return this.minecraft.broadcastGuildMessage({
-        username: username,
-        message: playerMessage,
-        guildRank: guildRank,
-      })
-    }
-
-    if (this.isOfficerMessage(message)) {
-      return this.minecraft.broadcastOfficerMessage({
-        username: username,
-        message: playerMessage,
-        guildRank: guildRank,
-      })
     }
   }
 

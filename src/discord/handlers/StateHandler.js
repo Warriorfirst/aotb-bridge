@@ -7,7 +7,7 @@ class StateHandler {
     this.discord.app.log.discord('Client ready, logged in as ' + this.discord.client.user.tag)
     this.discord.client.user.setActivity('Guild Chat', { type: 'WATCHING' })
 
-    await this.discord.interactionHandler.loadCommands()
+    this.discord.interactionHandler.loadCommands()
 
     if (this.discord.app.config.discord.messageMode == 'webhook') {
       this.discord.guildWebhook = await getWebhook(this.discord, this.discord.app.config.discord.guildChannel)

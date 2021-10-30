@@ -4,6 +4,7 @@ const StateHandler = require('./handlers/StateHandler')
 const ErrorHandler = require('./handlers/ErrorHandler')
 const ChatHandler = require('./handlers/ChatHandler')
 const mineflayer = require('mineflayer')
+const hyflayer = require('hyflayer')
 
 class MinecraftManager extends CommunicationBridge {
   constructor(app) {
@@ -16,9 +17,10 @@ class MinecraftManager extends CommunicationBridge {
     this.chatHandler = new ChatHandler(this, new CommandHandler(this))
   }
 
-  connect() {
+  async connect() {
     this.bot = this.createBotConnection()
 
+    await this.bot.loadPlugin(hyflayer)
     this.errorHandler.registerEvents(this.bot)
     this.stateHandler.registerEvents(this.bot)
     this.chatHandler.registerEvents(this.bot)
@@ -30,7 +32,6 @@ class MinecraftManager extends CommunicationBridge {
       port: this.app.config.server.port,
       username: this.app.config.minecraft.username,
       password: this.app.config.minecraft.password,
-      version: false,
       auth: this.app.config.minecraft.accountType,
     })
   }
@@ -39,7 +40,7 @@ class MinecraftManager extends CommunicationBridge {
     this.app.log.broadcast(`${username}: ${message}`, 'Minecraft')
 
     if (this.bot.player !== undefined) {
-      this.bot.chat(`/gc ${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} ${message}`)
+      this.bot.chatGuild(message, `${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} `)
     }
   }
 
@@ -47,7 +48,7 @@ class MinecraftManager extends CommunicationBridge {
     this.app.log.broadcast(`${username}: ${message}`, 'Minecraft')
 
     if (this.bot.player !== undefined) {
-      this.bot.chat(`/oc ${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} ${message}`)
+      this.bot.chatOfficer(message, `${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} `)
     }
   }
 }

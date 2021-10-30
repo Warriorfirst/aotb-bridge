@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { Collection } = require('discord.js')
+const { Collection, DiscordAPIError } = require('discord.js')
 
 class InteractionHandler {
   commands = new Collection()
@@ -44,7 +44,10 @@ class InteractionHandler {
 
     const guild = this.discord.client.guilds.cache.find(guild => guild.channels.cache.has(this.discord.app.config.discord.guildChannel))
 
-    return await guild.commands.create(data).catch(e => this.discord.app.log.error(e))
+    return await guild.commands.create(data).catch(e => {
+      if (e instanceof DiscordAPIError) throw Error('Discord bot requires the applications.commands scope.')
+      this.discord.app.log.error(e)
+    })
   }
 
   /** @return {import('discord.js').ApplicationCommandData} */
