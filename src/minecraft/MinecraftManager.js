@@ -24,6 +24,10 @@ class MinecraftManager extends CommunicationBridge {
     this.errorHandler.registerEvents(this.bot)
     this.stateHandler.registerEvents(this.bot)
     this.chatHandler.registerEvents(this.bot)
+
+    setTimeout(() => {
+      this.bot.chat('/tipall')
+    }, 5 * 60 * 1000) // 5 minutes
   }
 
   createBotConnection() {

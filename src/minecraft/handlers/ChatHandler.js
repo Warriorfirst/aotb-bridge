@@ -51,6 +51,10 @@ class StateHandler extends EventHandler {
   onMessage(event) {
     const message = event.toString().trim()
 
+    if(message.startsWith('You tipped') || message == `You already tipped everyone that has boosters active, so there isn't anybody to be tipped right now!`) {
+      this.minecraft.app.log.minecraft(message)
+    }
+
     if (this.isLobbyJoinMessage(message)) {
       this.minecraft.app.log.minecraft('Sending Minecraft client to limbo')
       return this.bot.chat('/ac §')
