@@ -1,36 +1,32 @@
 const EventHandler = require('../../contracts/EventHandler')
 
 class StateHandler extends EventHandler {
+  /**
+   * @param {import('../MinecraftManager')} minecraft
+   */
   constructor(minecraft) {
     super()
 
     this.minecraft = minecraft
   }
 
+  /**
+   * @param {import('mineflayer').Bot} bot
+   */
   registerEvents(bot) {
     this.bot = bot
 
-    this.bot.on('error', (...args) => this.onError(...args))
+    this.bot.on('error', error => this.onError(error))
   }
 
+  /**
+   * @param {Error} error
+   */
   onError(error) {
-    if (this.isConnectionResetError(error)) {
-      return
-    }
-
-    if (this.isConnectionRefusedError(error)) {
-      return this.minecraft.app.log.error('Connection refused while attempting to login via the Minecraft client')
-    }
-
-    this.minecraft.app.log.error(error)
-  }
-
-  isConnectionResetError(error) {
-    return error.hasOwnProperty('code') && error.code == 'ECONNRESET'
-  }
-
-  isConnectionRefusedError(error) {
-    return error.hasOwnProperty('code') && error.code == 'ECONNREFUSED'
+    /**
+     * @todo Add error type checking back here
+     */
+    this.minecraft.app.log.error(error.message)
   }
 }
 

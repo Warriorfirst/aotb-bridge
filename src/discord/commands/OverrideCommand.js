@@ -1,6 +1,9 @@
 const DiscordCommand = require('../../contracts/DiscordCommand')
 
 class OverrideCommand extends DiscordCommand {
+  /**
+   * @param {import('../DiscordManager')} discord
+   */
   constructor(discord) {
     super(discord)
 
@@ -9,6 +12,9 @@ class OverrideCommand extends DiscordCommand {
     this.description = 'Executes commands as the minecraft bot'
   }
 
+  /**
+   * @param {import('discord.js-light').Message} message
+   */
   onCommand(message) {
     let args = this.getArgs(message).join(' ')
 

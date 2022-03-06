@@ -6,6 +6,9 @@ const ChatHandler = require('./handlers/ChatHandler')
 const mineflayer = require('mineflayer')
 
 class MinecraftManager extends CommunicationBridge {
+  /**
+   * @param {import('../Application')} app
+   */
   constructor(app) {
     super()
 
@@ -26,17 +29,20 @@ class MinecraftManager extends CommunicationBridge {
 
   createBotConnection() {
     return mineflayer.createBot({
-      host: this.app.config.server.host,
-      port: this.app.config.server.port,
+      host: this.app.config.server.host ?? 'mc.hypixel.net',
+      port: this.app.config.server.port ?? 25565,
       username: 'Bridge',
       auth: 'microsoft',
     })
   }
 
+  /**
+   * @param {{username: string; message: string; replyingTo?: string}} Content
+   */
   onBroadcast({ username, message, replyingTo }) {
     this.app.log.broadcast(`${username}: ${message}`, 'Minecraft')
 
-    if (this.bot.player !== undefined) {
+    if (this.bot?.player !== undefined) {
       this.bot.chat(`/gc ${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} ${message}`)
     }
   }

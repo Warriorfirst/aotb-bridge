@@ -1,6 +1,9 @@
 const DiscordCommand = require('../../contracts/DiscordCommand')
 
 class KickCommand extends DiscordCommand {
+  /**
+   * @param {import('../DiscordManager')} discord
+   */
   constructor(discord) {
     super(discord)
 
@@ -9,6 +12,9 @@ class KickCommand extends DiscordCommand {
     this.description = 'Kicks the given user from the guild'
   }
 
+  /**
+   * @param {import('discord.js-light').Message} message
+   */
   onCommand(message) {
     let args = this.getArgs(message)
     let user = args.shift()

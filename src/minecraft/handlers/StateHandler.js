@@ -1,6 +1,9 @@
 const EventHandler = require('../../contracts/EventHandler')
 
 class StateHandler extends EventHandler {
+  /**
+   * @param {import('../MinecraftManager')} minecraft
+   */
   constructor(minecraft) {
     super()
 
@@ -9,16 +12,19 @@ class StateHandler extends EventHandler {
     this.exactDelay = 0
   }
 
+  /**
+   * @param {import('mineflayer').Bot} bot
+   */
   registerEvents(bot) {
     this.bot = bot
 
-    this.bot.on('login', (...args) => this.onLogin(...args))
-    this.bot.on('end', (...args) => this.onEnd(...args))
-    this.bot.on('kicked', (...args) => this.onKicked(...args))
+    this.bot.on('login', () => this.onLogin())
+    this.bot.on('end', () => this.onEnd())
+    this.bot.on('kicked', reason => this.onKicked(reason))
   }
 
   onLogin() {
-    this.minecraft.app.log.minecraft('Client ready, logged in as ' + this.bot.username)
+    this.minecraft.app.log.minecraft('Client ready, logged in as ' + this.bot?.username)
 
     this.loginAttempts = 0
     this.exactDelay = 0
@@ -39,6 +45,9 @@ class StateHandler extends EventHandler {
     setTimeout(() => this.minecraft.connect(), loginDelay)
   }
 
+  /**
+   * @param {string} reason
+   */
   onKicked(reason) {
     this.minecraft.app.log.warn(`Minecraft bot was kicked from server for "${reason}"`)
 

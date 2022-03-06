@@ -1,9 +1,16 @@
 class MessageHandler {
+  /**
+   * @param {import('../DiscordManager')} discord
+   * @param {import('../CommandHandler')} command
+   */
   constructor(discord, command) {
     this.discord = discord
     this.command = command
   }
 
+  /**
+   * @param {import('discord.js-light').Message} message
+   */
   async onMessage(message) {
     if (!this.shouldBroadcastMessage(message)) {
       return
@@ -19,15 +26,18 @@ class MessageHandler {
     }
 
     this.discord.broadcastMessage({
-      username: message.member.displayName,
+      username: message.member?.displayName,
       message: this.stripDiscordContent(message.content),
       replyingTo: await this.fetchReply(message),
     })
   }
 
+  /**
+   * @param {import('discord.js-light').Message} message
+   */
   async fetchReply(message) {
     try {
-      if (!message.reference) return null
+      if (!message.reference || !message.reference.messageID) return null
 
       const reference = await message.channel.messages.fetch(message.reference.messageID)
 
@@ -37,13 +47,16 @@ class MessageHandler {
     }
   }
 
+  /**
+   * @param {string} message
+   */
   stripDiscordContent(message) {
     return message
       .replace(/<[@|#|!|&]{1,2}(\d+){16,}>/g, '\n')
       .replace(/<:\w+:(\d+){16,}>/g, '\n')
       .replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, '\n')
       .split('\n')
-      .map(part => {
+      .map((/** @type {string} */ part) => {
         part = part.trim()
 
         return part.length == 0 ? '' : part + ' '
@@ -51,6 +64,9 @@ class MessageHandler {
       .join('')
   }
 
+  /**
+   * @param {import('discord.js-light').Message} message
+   */
   shouldBroadcastMessage(message) {
     return !message.author.bot && message.channel.id == this.discord.app.config.discord.channel && message.content && message.content.length > 0
   }

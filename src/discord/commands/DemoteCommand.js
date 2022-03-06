@@ -1,6 +1,9 @@
 const DiscordCommand = require('../../contracts/DiscordCommand')
 
 class DemoteCommand extends DiscordCommand {
+  /**
+   * @param {import('../DiscordManager')} discord
+   */
   constructor(discord) {
     super(discord)
 
@@ -9,6 +12,9 @@ class DemoteCommand extends DiscordCommand {
     this.description = 'Demotes the given user by one guild rank'
   }
 
+  /**
+   * @param {import('discord.js-light').Message} message
+   */
   onCommand(message) {
     let args = this.getArgs(message)
     let user = args.shift()

@@ -2,6 +2,9 @@ const fs = require('fs')
 const { Collection } = require('discord.js-light')
 
 class CommandHandler {
+  /**
+   * @param {import('./DiscordManager')} discord
+   */
   constructor(discord) {
     this.discord = discord
 
@@ -15,16 +18,18 @@ class CommandHandler {
     }
   }
 
+  /**
+   * @param {import('discord.js-light').Message} message
+   */
   handle(message) {
     if (!message.content.startsWith(this.prefix)) {
       return false
     }
 
     let args = message.content.slice(this.prefix.length).trim().split(/ +/)
-    let commandName = args.shift().toLowerCase()
+    let commandName = args.shift()?.toLowerCase()
 
-    let command = this.commands.get(commandName)
-      || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
+    let command = this.commands.get(commandName) || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
     if (!command) {
       return false
@@ -34,8 +39,8 @@ class CommandHandler {
       return message.channel.send({
         embed: {
           description: `You don't have permission to do that.`,
-          color: 'DC143C'
-        }
+          color: 'DC143C',
+        },
       })
     }
 
@@ -45,12 +50,18 @@ class CommandHandler {
     return true
   }
 
+  /**
+   * @param {import('discord.js-light').GuildMember?} member
+   */
   isCommander(member) {
-    return member.roles.cache.find(r => r.id == this.discord.app.config.discord.commandRole)
+    return member?.roles.cache.find((/** @type {{ id: any; }} */ r) => r.id == this.discord.app.config.discord.commandRole)
   }
 
-  isOwner(member) {
-    return member.id == this.discord.app.config.discord.ownerId
+  /**
+   * @param {import('discord.js-light').User} user
+   */
+  isOwner(user) {
+    return user.id == this.discord.app.config.discord.ownerId
   }
 }
 

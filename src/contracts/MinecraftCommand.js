@@ -1,8 +1,14 @@
 class MinecraftCommand {
+  /**
+   * @param {import('../minecraft/MinecraftManager')} minecraft
+   */
   constructor(minecraft) {
     this.minecraft = minecraft
   }
 
+  /**
+   * @param {string} message
+   */
   getArgs(message) {
     let args = message.split(' ')
 
@@ -11,12 +17,19 @@ class MinecraftCommand {
     return args
   }
 
+  /**
+   * @param {string} message
+   */
   send(message) {
-    if (this.minecraft.bot.player !== undefined) {
+    if (this.minecraft.bot?.player !== undefined) {
       this.minecraft.bot.chat(message)
     }
   }
 
+  /**
+   * @param {any} player
+   * @param {any} message
+   */
   onCommand(player, message) {
     throw new Error('Command onCommand method is not implemented yet!')
   }

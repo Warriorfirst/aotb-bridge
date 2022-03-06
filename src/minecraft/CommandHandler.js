@@ -2,6 +2,9 @@ const fs = require('fs')
 const { Collection } = require('discord.js-light')
 
 class CommandHandler {
+  /**
+   * @param {import('./MinecraftManager')} minecraft
+   */
   constructor(minecraft) {
     this.minecraft = minecraft
 
@@ -16,20 +19,23 @@ class CommandHandler {
     }
   }
 
+  /**
+   * @param {string} player
+   * @param {string} message
+   */
   handle(player, message) {
     if (!message.startsWith(this.prefix)) {
       return false
     }
 
     let args = message.slice(this.prefix.length).trim().split(/ +/)
-    let commandName = args.shift().toLowerCase()
+    let commandName = args.shift()?.toLowerCase()
 
-    let command = this.commands.get(commandName)
-      || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
+    if(!commandName) return false
 
-    if (!command) {
-      return false
-    }
+    let command = this.commands.get(commandName) || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
+
+    if (!command) return false
 
     this.minecraft.app.log.minecraft(`${player} - [${command.name}] ${message}`)
     command.onCommand(player, message)

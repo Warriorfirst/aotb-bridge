@@ -1,3 +1,5 @@
+// @ts-nocheck
+/** @todo type declarations */
 const express = require('express')
 
 class ExpressManager {
@@ -37,7 +39,7 @@ class ExpressManager {
       if (request.headers?.authorization !== this.app.config.express.authorization && request.query?.key !== this.app.config.express.authorization) {
         return response.status(401).json({
           success: false,
-          reason: 'Invalid or Missing Authentication'
+          reason: 'Invalid or Missing Authentication',
         })
       }
 
@@ -47,7 +49,7 @@ class ExpressManager {
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -61,7 +63,7 @@ class ExpressManager {
           if (this.missing(['username', 'rank'], request.body)) {
             return response.status(400).json({
               success: false,
-              reason: 'Malformed Body'
+              reason: 'Malformed Body',
             })
           }
           next()
@@ -71,7 +73,7 @@ class ExpressManager {
           if (this.missing(['message'], request.body)) {
             return response.status(400).json({
               success: false,
-              reason: 'Malformed Body'
+              reason: 'Malformed Body',
             })
           }
           next()
@@ -81,7 +83,7 @@ class ExpressManager {
           if (this.missing(['username', 'duration'], request.body)) {
             return response.status(400).json({
               success: false,
-              reason: 'Malformed Body'
+              reason: 'Malformed Body',
             })
           }
           break
@@ -90,7 +92,7 @@ class ExpressManager {
           if (this.missing(['username'], request.body)) {
             return response.status(400).json({
               success: false,
-              reason: 'Malformed Body'
+              reason: 'Malformed Body',
             })
           }
           next()
@@ -100,7 +102,7 @@ class ExpressManager {
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -125,20 +127,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(`/guild kick ${request.body.username} ${request.body.reason ? request.body.reason : 'No reason specified'}`)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -149,20 +151,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(`/guild mute ${request.body.username}`)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -173,20 +175,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(`/guild unmute ${request.body.username}`)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -197,20 +199,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(`/guild promote ${request.body.username}`)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -220,20 +222,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(`/guild demote ${request.body.username}`)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -244,20 +246,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(request.body.message)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -268,20 +270,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(`/guild invite ${request.body.username}`)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }
@@ -292,20 +294,20 @@ class ExpressManager {
         this.app.minecraft.bot.chat(`/guild setrank ${request.body.username} ${request.body.rank}`)
 
         return response.status(200).json({
-          success: true
+          success: true,
         })
       }
 
       return response.status(409).json({
         success: false,
-        reason: 'Minecraft client is unavailable at this time'
+        reason: 'Minecraft client is unavailable at this time',
       })
     } catch (error) {
       this.app.log.error(error)
 
       return response.status(500).json({
         success: false,
-        reason: 'An internal server error occurred'
+        reason: 'An internal server error occurred',
       })
     }
   }

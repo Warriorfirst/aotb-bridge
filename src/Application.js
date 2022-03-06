@@ -5,10 +5,10 @@ const ExpressManager = require('./express/ExpressManager')
 const Logger = require('./Logger')
 
 class Application {
-  async register() {
-    this.config = new Configuration()
-    this.log = new Logger()
+  log = new Logger()
+  config = new Configuration()
 
+  async register() {
     this.discord = new DiscordManager(this)
     this.minecraft = new MinecraftManager(this)
     this.express = new ExpressManager(this)
@@ -18,9 +18,9 @@ class Application {
   }
 
   async connect() {
-    this.discord.connect()
-    this.minecraft.connect()
-    this.express.initialize()
+    this.discord?.connect()
+    this.minecraft?.connect()
+    this.express?.initialize()
   }
 }
 
