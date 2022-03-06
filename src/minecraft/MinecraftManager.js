@@ -28,10 +28,8 @@ class MinecraftManager extends CommunicationBridge {
     return mineflayer.createBot({
       host: this.app.config.server.host,
       port: this.app.config.server.port,
-      username: this.app.config.minecraft.username,
-      password: this.app.config.minecraft.password,
-      version: false,
-      auth: this.app.config.minecraft.accountType,
+      username: 'Bridge',
+      auth: 'microsoft',
     })
   }
 

@@ -6,12 +6,6 @@ class Configuration {
       host: 'localhost',
       port: 25565,
     },
-    minecraft: {
-      username: null,
-      password: null,
-      lobbyHolder: null,
-      accountType: 'mojang',
-    },
     discord: {
       token: null,
       channel: null,
@@ -30,10 +24,6 @@ class Configuration {
   environmentOverrides = {
     SERVER_HOST: val => (this.properties.server.host = val),
     SERVER_PORT: val => (this.properties.server.port = val),
-    MINECRAFT_USERNAME: val => (this.properties.minecraft.username = val),
-    MINECRAFT_PASSWORD: val => (this.properties.minecraft.password = val),
-    MINECRAFT_LOBBY_HOLDER: val => (this.properties.minecraft.lobbyHolder = val),
-    MINECRAFT_ACCOUNT_TYPE: val => (this.properties.minecraft.accountType = val),
     DISCORD_TOKEN: val => (this.properties.discord.token = val),
     DISCORD_CHANNEL: val => (this.properties.discord.channel = val),
     DISCORD_COMMAND_ROLE: val => (this.properties.discord.commandRole = val),
