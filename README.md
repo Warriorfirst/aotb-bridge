@@ -144,8 +144,6 @@ The `authentication` option is the key which you can put in the header or query 
   - Allocate a second discord channel to use for two way officer chat.
 - [ ] Switch to slash commands
   - Use discord integrations rather than a prefix based command system
-- [ ] Improve bot state messages
-  - Send online/offline message on bot login/logout rather than process start/end
 - [ ] Add proper feedback to commands
   - Instead of replying `/g mute 23456789 30d has been executed`, wait for the hypixel response and reply to the command with the outcome
 

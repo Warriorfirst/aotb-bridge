@@ -33,7 +33,7 @@ class MinecraftManager extends CommunicationBridge {
       port: this.app.config.server.port ?? 25565,
       username: 'Bridge',
       auth: 'microsoft',
-      version: '1.16.2',
+      version: '1.16.5',
       hideErrors: true,
     })
   }
