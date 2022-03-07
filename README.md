@@ -140,14 +140,14 @@ The `authentication` option is the key which you can put in the header or query 
 
 ### Roadmap
 
-- [ ] Chat message filter
-  - The filter should block any messages sent from Discord to Hypixel that contains banable words, and words that could potentially cause a mute.
-- [ ] Log guild events
-  - Guild joins/leaves/kicks, mutes/unmutes and promotion/demotions
-- [ ] Ingame commands
-  - Add commands for players to use ingame to check other player stats (eg `!skills <ign>`, `!weight <ign>` etc)
 - [ ] Add support for officer chat
   - Allocate a second discord channel to use for two way officer chat.
+- [ ] Switch to slash commands
+  - Use discord integrations rather than a prefix based command system
+- [ ] Improve bot state messages
+  - Send online/offline message on bot login/logout rather than process start/end
+- [ ] Add proper feedback to commands
+  - Instead of replying `/g mute 23456789 30d has been executed`, wait for the hypixel response and reply to the command with the outcome
 
 ## License
 
