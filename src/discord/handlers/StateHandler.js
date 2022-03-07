@@ -1,4 +1,4 @@
-const { TextChannel } = require('discord.js-light')
+const { TextChannel } = require('discord.js')
 
 class StateHandler {
   /**
@@ -18,13 +18,15 @@ class StateHandler {
       this.discord.webhook = webhook
     }
 
-    this.discord.client?.channels.fetch(this.discord.app.config.discord.channel).then((/** @type {import('discord.js-light').Channel} */ channel) => {
-      channel.isText() &&
+    this.discord.client?.channels.fetch(this.discord.app.config.discord.channel).then(channel => {
+      channel?.isText() &&
         channel.send({
-          embed: {
-            author: { name: `Chat Bridge is Online` },
-            color: '47F049',
-          },
+          embeds: [
+            {
+              author: { name: `Chat Bridge is Online` },
+              color: 0x47f049,
+            },
+          ],
         })
     })
   }
@@ -32,14 +34,16 @@ class StateHandler {
   onClose() {
     this.discord.client?.channels
       .fetch(this.discord.app.config.discord.channel)
-      .then((/** @type {import('discord.js-light').Channel} */ channel) => {
-        channel.isText() &&
+      .then(channel => {
+        channel?.isText() &&
           channel
             .send({
-              embed: {
-                author: { name: `Chat Bridge is Offline` },
-                color: 'F04947',
-              },
+              embeds: [
+                {
+                  author: { name: `Chat Bridge is Offline` },
+                  color: 0xF04947,
+                },
+              ],
             })
             .then(() => {
               process.exit()

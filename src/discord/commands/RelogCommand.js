@@ -13,7 +13,7 @@ class RelogCommand extends DiscordCommand {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    */
   onCommand(message) {
     let args = this.getArgs(message)
@@ -34,7 +34,7 @@ class RelogCommand extends DiscordCommand {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    * @param {number} delay
    */
   relogWithDelay(message, delay = 0) {

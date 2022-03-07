@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { Collection } = require('discord.js-light')
+const { Collection } = require('discord.js')
 
 class CommandHandler {
   /**
@@ -31,7 +31,7 @@ class CommandHandler {
     let args = message.slice(this.prefix.length).trim().split(/ +/)
     let commandName = args.shift()?.toLowerCase()
 
-    if(!commandName) return false
+    if (!commandName) return false
 
     let command = this.commands.get(commandName) || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 

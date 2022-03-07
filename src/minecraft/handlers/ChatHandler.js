@@ -22,7 +22,7 @@ class StateHandler extends EventHandler {
   }
 
   /**
-   * @param {import('mineflayer').ChatMessage} jsonMessage
+   * @param {import('prismarine-chat').ChatMessage} jsonMessage
    */
   onMessage(jsonMessage) {
     const message = jsonMessage.toString().trim()

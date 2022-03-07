@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { Collection } = require('discord.js-light')
+const { Collection } = require('discord.js')
 
 class CommandHandler {
   /**
@@ -19,7 +19,7 @@ class CommandHandler {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    */
   handle(message) {
     if (!message.content.startsWith(this.prefix)) {
@@ -37,10 +37,10 @@ class CommandHandler {
 
     if ((command.name != 'help' && !this.isCommander(message.member)) || (command.name == 'override' && !this.isOwner(message.author))) {
       return message.channel.send({
-        embed: {
+        embeds: [{
           description: `You don't have permission to do that.`,
-          color: 'DC143C',
-        },
+          color: 0xDC143C,
+        }],
       })
     }
 
@@ -51,14 +51,14 @@ class CommandHandler {
   }
 
   /**
-   * @param {import('discord.js-light').GuildMember?} member
+   * @param {import('discord.js').GuildMember?} member
    */
   isCommander(member) {
     return member?.roles.cache.find((/** @type {{ id: any; }} */ r) => r.id == this.discord.app.config.discord.commandRole)
   }
 
   /**
-   * @param {import('discord.js-light').User} user
+   * @param {import('discord.js').User} user
    */
   isOwner(user) {
     return user.id == this.discord.app.config.discord.ownerId

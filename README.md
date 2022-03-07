@@ -1,6 +1,6 @@
 # Hypixel Discord Chat Bridge
 
-A two-way chat bridge between [Hypixel](https://hypixel.net/) guild chat and a [Discord](https://discord.com/) channel. The application utilizes [Discord.js-light](https://github.com/timotejroiko/discord.js-light) for communicating with Discord, and [Mineflayer](https://github.com/PrismarineJS/mineflayer) for communicating with Hypixel.
+A two-way chat bridge between [Hypixel](https://hypixel.net/) guild chat and a [Discord](https://discord.com/) channel. The application utilizes [Discord.js](https://discord.js.org) for communicating with Discord, and [Mineflayer](https://github.com/PrismarineJS/mineflayer) for communicating with Hypixel.
 
 > This application will login to Hypixel using Mineflayer which is not a normal Minecraft client, this could result in your Minecraft account getting banned from Hypixel, so use this application at your own risk.
 
@@ -122,7 +122,7 @@ The messageMode can either be `bot` or `webhook`. This selects how the messages 
 
 The express section includes an option to enable/disable the express API option. If enabled, this will allow you to locally send requests to your bridge bot via other applications, and globally if you have port forwarding enabled.
 
-The `port` option allows you to set what port you want to host your API on. 
+The `port` option allows you to set what port you want to host your API on.
 
 The `authentication` option is the key which you can put in the header or query of your request. This allows security as only people with the authentication key will be able to successfully send requests to your API.
 

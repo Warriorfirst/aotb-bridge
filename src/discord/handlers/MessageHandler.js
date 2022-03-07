@@ -9,7 +9,7 @@ class MessageHandler {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    */
   async onMessage(message) {
     if (!this.shouldBroadcastMessage(message)) {
@@ -33,13 +33,13 @@ class MessageHandler {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    */
   async fetchReply(message) {
     try {
-      if (!message.reference || !message.reference.messageID) return null
+      if (!message.reference || !message.reference.messageId) return null
 
-      const reference = await message.channel.messages.fetch(message.reference.messageID)
+      const reference = await message.channel.messages.fetch(message.reference.messageId)
 
       return reference.member ? reference.member.displayName : reference.author.username
     } catch (e) {
@@ -65,7 +65,7 @@ class MessageHandler {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    */
   shouldBroadcastMessage(message) {
     return !message.author.bot && message.channel.id == this.discord.app.config.discord.channel && message.content && message.content.length > 0

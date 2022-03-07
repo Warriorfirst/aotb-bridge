@@ -7,7 +7,7 @@ class DiscordCommand {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    */
   getArgs(message) {
     let args = message.content.split(' ')
@@ -27,7 +27,7 @@ class DiscordCommand {
   }
 
   /**
-   * @param {import('discord.js-light').Message} message
+   * @param {import('discord.js').Message} message
    */
   onCommand(message) {
     throw new Error('Command onCommand method is not implemented yet!')
