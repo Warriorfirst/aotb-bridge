@@ -77,6 +77,7 @@ class StateHandler extends EventHandler {
       embeds: [
         {
           author: { name: `Chat Bridge is Online` },
+          description: `Connected to \`${this.minecraft.app.config.server.host}:${this.minecraft.app.config.server.port}\``,
           color: 0x47f049,
         },
       ],
