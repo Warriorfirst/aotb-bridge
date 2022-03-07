@@ -26,7 +26,7 @@ class DiscordManager extends CommunicationBridge {
     this.client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS'] })
 
     this.client.on('ready', () => this.stateHandler.onReady())
-    this.client.on('message', message => this.messageHandler.onMessage(message))
+    this.client.on('messageCreate', message => this.messageHandler.onMessage(message))
 
     this.client.login(this.app.config.discord.token).catch(error => {
       this.app.log.error(error)
