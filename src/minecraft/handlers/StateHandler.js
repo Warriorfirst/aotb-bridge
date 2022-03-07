@@ -1,6 +1,8 @@
 const EventHandler = require('../../contracts/EventHandler')
 
 class StateHandler extends EventHandler {
+  hasSentLoginMessage = false
+
   /**
    * @param {import('../MinecraftManager')} minecraft
    */
@@ -19,8 +21,13 @@ class StateHandler extends EventHandler {
     this.bot = bot
 
     this.bot.on('login', () => this.onLogin())
-    this.bot.on('end', () => this.onEnd())
+    this.bot.on('end', reason => this.onEnd(reason))
     this.bot.on('kicked', reason => this.onKicked(reason))
+
+    process.on('SIGINT', async () => {
+      await this.sendLogout('Process quit')
+      process.exit(0)
+    })
   }
 
   onLogin() {
@@ -28,9 +35,17 @@ class StateHandler extends EventHandler {
 
     this.loginAttempts = 0
     this.exactDelay = 0
+
+    if (!this.hasSentLoginMessage) {
+      this.sendLogin()
+      this.hasSentLoginMessage = true
+    }
   }
 
-  onEnd() {
+  /**
+   * @param {string} reason
+   */
+  onEnd(reason) {
     let loginDelay = this.exactDelay
     if (loginDelay == 0) {
       loginDelay = (this.loginAttempts + 1) * 5000
@@ -43,6 +58,9 @@ class StateHandler extends EventHandler {
     this.minecraft.app.log.warn(`Minecraft bot disconnected from server, attempting reconnect in ${loginDelay / 1000} seconds`)
 
     setTimeout(() => this.minecraft.connect(), loginDelay)
+
+    this.sendLogout(reason)
+    this.hasSentLoginMessage = false
   }
 
   /**
@@ -52,6 +70,32 @@ class StateHandler extends EventHandler {
     this.minecraft.app.log.warn(`Minecraft bot was kicked from server for "${reason}"`)
 
     this.loginAttempts++
+  }
+
+  sendLogin() {
+    return this.minecraft.app.discord?.channel?.send({
+      embeds: [
+        {
+          author: { name: `Chat Bridge is Online` },
+          color: 0x47f049,
+        },
+      ],
+    })
+  }
+
+  /**
+   * @param {string} reason
+   */
+  sendLogout(reason) {
+    return this.minecraft.app.discord?.channel?.send({
+      embeds: [
+        {
+          author: { name: `Chat Bridge is Offline` },
+          description: `Reason: \`${reason}\``,
+          color: 0xf04947,
+        },
+      ],
+    })
   }
 }
 

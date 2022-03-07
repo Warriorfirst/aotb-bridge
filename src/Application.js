@@ -18,9 +18,9 @@ class Application {
   }
 
   async connect() {
-    this.discord?.connect()
-    this.minecraft?.connect()
-    this.express?.initialize()
+    await this.discord?.connect()
+    await this.minecraft?.connect()
+    await this.express?.initialize()
   }
 }
 

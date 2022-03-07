@@ -12,64 +12,33 @@ class StateHandler {
     this.discord.app.log.discord('Client ready, logged in as ' + this.discord.client?.user?.tag)
     this.discord.client?.user?.setActivity('Guild Chat', { type: 'WATCHING' })
 
+    const channel = await this.discord.client?.channels.fetch(this.discord.app.config.discord.channel)
+
+    if (channel && channel instanceof TextChannel) {
+      this.discord.channel = channel
+    } else {
+      throw `Could not find channel ${this.discord.app.config.discord.channel}`
+    }
+
     if (this.discord.app.config.discord.messageMode == 'webhook') {
-      const webhook = await getWebhook(this.discord)
+      const webhook = await this.fetchWebhook()
       if (!webhook) throw "Couldn't find or setup a webhook"
       this.discord.webhook = webhook
     }
-
-    this.discord.client?.channels.fetch(this.discord.app.config.discord.channel).then(channel => {
-      channel?.isText() &&
-        channel.send({
-          embeds: [
-            {
-              author: { name: `Chat Bridge is Online` },
-              color: 0x47f049,
-            },
-          ],
-        })
-    })
   }
 
-  onClose() {
-    this.discord.client?.channels
-      .fetch(this.discord.app.config.discord.channel)
-      .then(channel => {
-        channel?.isText() &&
-          channel
-            .send({
-              embeds: [
-                {
-                  author: { name: `Chat Bridge is Offline` },
-                  color: 0xF04947,
-                },
-              ],
-            })
-            .then(() => {
-              process.exit()
-            })
-      })
-      .catch(() => {
-        process.exit()
-      })
-  }
-}
+  async fetchWebhook() {
+    if (!this.discord.channel) throw `Could not find channel ${this.discord.app.config.discord.channel}`
+    let webhooks = await this.discord.channel?.fetchWebhooks()
 
-/**
- * @param {import('../DiscordManager')} discord
- */
-async function getWebhook(discord) {
-  let channel = discord.client?.channels.cache.get(discord.app.config.discord.channel)
-  if (!channel || !(channel instanceof TextChannel)) return
-
-  let webhooks = await channel?.fetchWebhooks()
-  if (webhooks.first()) {
-    return webhooks.first()
-  } else {
-    var res = await channel.createWebhook(discord.client?.user?.username ?? 'Chat Bridge', {
-      avatar: discord.client?.user?.avatarURL() ?? undefined,
-    })
-    return res
+    if (webhooks.first()) {
+      return webhooks.first()
+    } else {
+      var res = await this.discord.channel.createWebhook(this.discord.client?.user?.username ?? 'Chat Bridge', {
+        avatar: this.discord.client?.user?.avatarURL() ?? undefined,
+      })
+      return res
+    }
   }
 }
 

@@ -11,6 +11,11 @@ class DiscordManager extends CommunicationBridge {
   webhook = null
 
   /**
+   * @type {import('discord.js').TextChannel?} app
+   */
+  channel = null
+
+  /**
    * @param {import('../Application')} app
    */
   constructor(app) {
@@ -23,18 +28,14 @@ class DiscordManager extends CommunicationBridge {
   }
 
   connect() {
-    this.client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS'] })
+    return new Promise(resolve => {
+      this.client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS'] })
 
-    this.client.on('ready', () => this.stateHandler.onReady())
-    this.client.on('messageCreate', message => this.messageHandler.onMessage(message))
+      this.client.on('ready', () => this.stateHandler.onReady().then(resolve))
+      this.client.on('messageCreate', message => this.messageHandler.onMessage(message))
 
-    this.client.login(this.app.config.discord.token).catch(error => {
-      this.app.log.error(error)
-
-      process.exit(1)
+      this.client.login(this.app.config.discord.token)
     })
-
-    process.on('SIGINT', () => this.stateHandler.onClose())
   }
 
   /**
@@ -44,24 +45,21 @@ class DiscordManager extends CommunicationBridge {
     this.app.log.broadcast(`${username} [${guildRank}]: ${message}`, `Discord`)
     switch (this.app.config.discord.messageMode.toLowerCase()) {
       case 'bot':
-        this.client?.channels.fetch(this.app.config.discord.channel).then(channel => {
-          channel?.isText() &&
-            channel.send({
-              embeds: [
-                {
-                  description: message,
-                  color: 0x6495ed,
-                  timestamp: new Date(),
-                  footer: {
-                    text: guildRank,
-                  },
-                  author: {
-                    name: username,
-                    icon_url: 'https://www.mc-heads.net/avatar/' + username,
-                  },
-                },
-              ],
-            })
+        this.channel?.send({
+          embeds: [
+            {
+              description: message,
+              color: 0x6495ed,
+              timestamp: new Date(),
+              footer: {
+                text: guildRank,
+              },
+              author: {
+                name: username,
+                icon_url: 'https://www.mc-heads.net/avatar/' + username,
+              },
+            },
+          ],
         })
         break
 
@@ -81,16 +79,13 @@ class DiscordManager extends CommunicationBridge {
   onBroadcastCleanEmbed({ message, color }) {
     this.app.log.broadcast(message, 'Event')
 
-    this.client?.channels.fetch(this.app.config.discord.channel).then(channel => {
-      channel?.isText() &&
-        channel.send({
-          embeds: [
-            {
-              color: color,
-              description: message,
-            },
-          ],
-        })
+    this.channel?.send({
+      embeds: [
+        {
+          color: color,
+          description: message,
+        },
+      ],
     })
   }
 
@@ -100,20 +95,17 @@ class DiscordManager extends CommunicationBridge {
   onBroadcastHeadedEmbed({ message, title, icon, color }) {
     this.app.log.broadcast(message, 'Event')
 
-    this.client?.channels.fetch(this.app.config.discord.channel).then(channel => {
-      channel?.isText() &&
-        channel.send({
-          embeds: [
-            {
-              color: color,
-              author: {
-                name: title,
-                icon_url: icon,
-              },
-              description: message,
-            },
-          ],
-        })
+    this.channel?.send({
+      embeds: [
+        {
+          color: color,
+          author: {
+            name: title,
+            icon_url: icon,
+          },
+          description: message,
+        },
+      ],
     })
   }
 
@@ -125,20 +117,17 @@ class DiscordManager extends CommunicationBridge {
 
     switch (this.app.config.discord.messageMode.toLowerCase()) {
       case 'bot':
-        this.client?.channels.fetch(this.app.config.discord.channel).then(channel => {
-          channel?.isText() &&
-            channel.send({
-              embeds: [
-                {
-                  color: color,
-                  timestamp: new Date(),
-                  author: {
-                    name: `${username} ${message}`,
-                    icon_url: 'https://www.mc-heads.net/avatar/' + username,
-                  },
-                },
-              ],
-            })
+        this.channel?.send({
+          embeds: [
+            {
+              color: color,
+              timestamp: new Date(),
+              author: {
+                name: `${username} ${message}`,
+                icon_url: 'https://www.mc-heads.net/avatar/' + username,
+              },
+            },
+          ],
         })
         break
 
