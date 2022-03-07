@@ -32,9 +32,9 @@ class MinecraftManager extends CommunicationBridge {
       host: this.app.config.server.host ?? 'mc.hypixel.net',
       port: this.app.config.server.port ?? 25565,
       username: 'Bridge',
-      auth: 'microsoft',
-      version: '1.16.5',
-      hideErrors: true,
+      auth: process.env['NODE_ENV'] == 'DEVELOPMENT' ? undefined : 'microsoft',
+      version: process.env['MINECRAFT_VERSION'] ?? '1.16.5',
+      hideErrors: true, // Prevent an insane amount of spam caused by watchdog, unfortunately this seems to be the only way
     })
   }
 
