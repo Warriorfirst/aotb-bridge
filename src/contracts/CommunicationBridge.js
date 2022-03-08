@@ -34,14 +34,14 @@ class CommunicationBridge {
   }
 
   /**
-   * @param {any} event
+   * @param {{message: string; color: number; destination: 'guild' | 'officer' | 'both'}} event
    */
   broadcastCleanEmbed(event) {
     return this.bridge?.onBroadcastCleanEmbed(event)
   }
 
   /**
-   * @param {any} event
+   * @param {{message: string; title: string; icon: string; color: number; destination: 'guild' | 'officer' | 'both'}} event
    */
   broadcastHeadedEmbed(event) {
     return this.bridge?.onBroadcastHeadedEmbed(event)

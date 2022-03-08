@@ -8,7 +8,8 @@ ENV SERVER_PORT=25565
 # Discord Account
 ENV DISCORD_TOKEN=yourDiscordToken
 # Discord Settings
-ENV DISCORD_CHANNEL=discordChannelId
+ENV DISCORD_GUILD_CHANNEL=discordChannelId
+ENV DISCORD_OFFICER_CHANNEL=discordChannelId
 ENV DISCORD_COMMAND_ROLE=discordCommandRoleId
 ENV DISCORD_OWNER_ID=discordOwnerId
 ENV DISCORD_PREFIX=!

@@ -8,7 +8,10 @@ class Configuration {
     },
     discord: {
       token: '',
-      channel: '',
+      channels: {
+        guild: '',
+        officer: '',
+      },
       commandRole: '',
       ownerId: '',
       prefix: '!',
@@ -25,7 +28,8 @@ class Configuration {
     SERVER_HOST: (/** @type {string} */ val) => (this.properties.server.host = val),
     SERVER_PORT: (/** @type {number} */ val) => (this.properties.server.port = val),
     DISCORD_TOKEN: (/** @type {string} */ val) => (this.properties.discord.token = val),
-    DISCORD_CHANNEL: (/** @type {string} */ val) => (this.properties.discord.channel = val),
+    DISCORD_GUILD_CHANNEL: (/** @type {string} */ val) => (this.properties.discord.channels.guild = val),
+    DISCORD_OFFICER_CHANNEL: (/** @type {string} */ val) => (this.properties.discord.channels.officer = val),
     DISCORD_COMMAND_ROLE: (/** @type {string} */ val) => (this.properties.discord.commandRole = val),
     DISCORD_OWNER_ID: (/** @type {string} */ val) => (this.properties.discord.ownerId = val),
     DISCORD_PREFIX: (/** @type {string} */ val) => (this.properties.discord.prefix = val),

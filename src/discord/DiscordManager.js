@@ -5,15 +5,19 @@ const CommandHandler = require('./CommandHandler')
 const Discord = require('discord.js')
 
 class DiscordManager extends CommunicationBridge {
-  /**
-   * @type {import('discord.js').Webhook?} webhook
-   */
-  webhook = null
+  webhooks = {
+    /** @type {import('discord.js').Webhook?} */
+    guild: null,
+    /** @type {import('discord.js').Webhook?} */
+    officer: null,
+  }
 
-  /**
-   * @type {import('discord.js').TextChannel?} app
-   */
-  channel = null
+  channels = {
+    /** @type {import('discord.js').TextChannel?} */
+    guild: null,
+    /** @type {import('discord.js').TextChannel?} */
+    officer: null,
+  }
 
   /**
    * @param {import('../Application')} app
@@ -39,33 +43,64 @@ class DiscordManager extends CommunicationBridge {
   }
 
   /**
-   * @param {{username: string; message: string; guildRank: string}} Content
+   * @param {{username: string, message: string, guildRank: string, destination: 'guild' | 'officer', colour: number}} Content
    */
-  onBroadcast({ username, message, guildRank }) {
-    this.app.log.broadcast(`${username} [${guildRank}]: ${message}`, `Discord`)
+  async sendBotMessage({ username, message, guildRank, destination, colour }) {
+    return await this.channels[destination]?.send({
+      embeds: [
+        {
+          description: message,
+          color: colour,
+          timestamp: Date.now(),
+          footer: {
+            text: guildRank,
+          },
+          author: {
+            name: username,
+            iconURL: 'https://www.mc-heads.net/avatar/' + username,
+          },
+        },
+      ],
+    })
+  }
+
+  /**
+   * @param {{username: string, message: string, destination: 'guild' | 'officer'}} Content
+   */
+  async sendWebhookMessage({ username, message, destination }) {
+    message = message.replace(/@/g, '') // No pinging
+    return await this.webhooks[destination]?.send({
+      username,
+      content: message,
+      avatarURL: 'https://www.mc-heads.net/avatar/' + username,
+    })
+  }
+
+  /**
+   * @param {import('discord.js').MessageEmbed} embed
+   * @param {'guild' | 'officer' | 'both'} destination
+   */
+  async sendEvent(embed, destination) {
+    if (destination == 'both') {
+      await this.channels['guild']?.send({ embeds: [embed] })
+      return this.channels['officer']?.send({ embeds: [embed] })
+    } else {
+      return this.channels[destination]?.send({ embeds: [embed] })
+    }
+  }
+
+  /**
+   * @param {{ username: string, message: string, guildRank: string; destination: 'guild' | 'officer' }} Content
+   */
+  onBroadcast({ username, message, guildRank, destination }) {
+    this.app.log.broadcast(`${destination == 'guild' ? 'Guild' : 'Officer'} > ${username} [${guildRank}]: ${message}`, `Discord`)
     switch (this.app.config.discord.messageMode.toLowerCase()) {
       case 'bot':
-        this.channel?.send({
-          embeds: [
-            {
-              description: message,
-              color: 0x6495ed,
-              timestamp: new Date(),
-              footer: {
-                text: guildRank,
-              },
-              author: {
-                name: username,
-                icon_url: 'https://www.mc-heads.net/avatar/' + username,
-              },
-            },
-          ],
-        })
+        this.sendBotMessage({ username, message, guildRank, destination, colour: 0x6495ed })
         break
 
       case 'webhook':
-        message = message.replace(/@/g, '') // Stop pinging @everyone or @here
-        this.webhook?.send({ username: username, avatarURL: 'https://www.mc-heads.net/avatar/' + username, content: message })
+        this.sendWebhookMessage({ username, message, destination })
         break
 
       default:
@@ -74,39 +109,37 @@ class DiscordManager extends CommunicationBridge {
   }
 
   /**
-   * @param {{message: string; color: import('discord.js').ColorResolvable}} Content
+   * @param {{message: string; color: number; destination: 'guild' | 'officer' | 'both'}} Content
    */
-  onBroadcastCleanEmbed({ message, color }) {
+  onBroadcastCleanEmbed({ message, color, destination }) {
     this.app.log.broadcast(message, 'Event')
 
-    this.channel?.send({
-      embeds: [
-        {
-          color: color,
-          description: message,
-        },
-      ],
-    })
+    this.sendEvent(
+      new Discord.MessageEmbed({
+        color: color,
+        description: message,
+      }),
+      destination
+    )
   }
 
   /**
-   * @param {{message: string; title: string; icon: string; color: import('discord.js').ColorResolvable}} Content
+   * @param {{message: string; title: string; icon: string; color: number; destination: 'guild' | 'officer' | 'both'}} Content
    */
-  onBroadcastHeadedEmbed({ message, title, icon, color }) {
+  onBroadcastHeadedEmbed({ message, title, icon, color, destination }) {
     this.app.log.broadcast(message, 'Event')
 
-    this.channel?.send({
-      embeds: [
-        {
-          color: color,
-          author: {
-            name: title,
-            icon_url: icon,
-          },
-          description: message,
+    this.sendEvent(
+      new Discord.MessageEmbed({
+        color: color,
+        author: {
+          name: title,
+          iconURL: icon,
         },
-      ],
-    })
+        description: message,
+      }),
+      destination
+    )
   }
 
   /**
@@ -117,7 +150,7 @@ class DiscordManager extends CommunicationBridge {
 
     switch (this.app.config.discord.messageMode.toLowerCase()) {
       case 'bot':
-        this.channel?.send({
+        this.channels.guild?.send({
           embeds: [
             {
               color: color,
@@ -132,7 +165,7 @@ class DiscordManager extends CommunicationBridge {
         break
 
       case 'webhook':
-        this.webhook?.send({
+        this.webhooks.guild?.send({
           username: username,
           avatarURL: 'https://www.mc-heads.net/avatar/' + username,
           embeds: [

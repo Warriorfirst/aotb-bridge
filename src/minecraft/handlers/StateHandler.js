@@ -1,4 +1,5 @@
 const EventHandler = require('../../contracts/EventHandler')
+const { MessageEmbed } = require('discord.js')
 
 class StateHandler extends EventHandler {
   hasSentLoginMessage = false
@@ -73,30 +74,28 @@ class StateHandler extends EventHandler {
   }
 
   sendLogin() {
-    return this.minecraft.app.discord?.channel?.send({
-      embeds: [
-        {
-          author: { name: `Chat Bridge is Online` },
-          description: `Connected to \`${this.minecraft.app.config.server.host}:${this.minecraft.app.config.server.port}\``,
-          color: 0x47f049,
-        },
-      ],
-    })
+    return this.minecraft.app.discord?.sendEvent(
+      new MessageEmbed({
+        author: { name: `Chat Bridge is Online` },
+        description: `Connected to \`${this.minecraft.app.config.server.host}:${this.minecraft.app.config.server.port}\``,
+        color: 0x47f049,
+      }),
+      'both'
+    )
   }
 
   /**
    * @param {string} reason
    */
   sendLogout(reason) {
-    return this.minecraft.app.discord?.channel?.send({
-      embeds: [
-        {
-          author: { name: `Chat Bridge is Offline` },
-          description: `Reason: \`${reason}\``,
-          color: 0xf04947,
-        },
-      ],
-    })
+    return this.minecraft.app.discord?.sendEvent(
+      new MessageEmbed({
+        author: { name: `Chat Bridge is Offline` },
+        description: `Reason: \`${reason}\``,
+        color: 0xf04947,
+      }),
+      'both'
+    )
   }
 }
 

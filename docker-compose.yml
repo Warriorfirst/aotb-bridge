@@ -10,7 +10,8 @@ services:
       SERVER_HOST: mc.hypixel.net
       SERVER_PORT: 25565
       DISCORD_TOKEN: yourDiscordToken
-      DISCORD_CHANNEL: discordChannelId
+      DISCORD_GUILD_CHANNEL: discordChannelId
+      DISCORD_OFFICER_CHANNEL: discordChannelId
       DISCORD_COMMAND_ROLE: discordCommandRoleId
       DISCORD_OWNER_ID: discordOwnerId
       MESSAGE_MODE: bot

@@ -39,11 +39,12 @@ class MinecraftManager extends CommunicationBridge {
   }
 
   /**
-   * @param {{username: string; message: string; replyingTo?: string}} Content
+   * @param {{username: string; message: string; replyingTo?: string; destination: 'guild' | 'officer'}} Content
    */
-  onBroadcast({ username, message, replyingTo }) {
+  onBroadcast({ username, message, replyingTo, destination }) {
     this.app.log.broadcast(`${username}: ${message}`, 'Minecraft')
-    const prefix = `/gc ${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} `
+    const commandPrefix = destination == 'guild' ? 'gc' : 'oc'
+    const prefix = `/${commandPrefix} ${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} `
     const messages = this.splitMessage(prefix, message)
 
     const sendNextMessage = () => {

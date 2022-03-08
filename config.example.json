@@ -5,7 +5,10 @@
   },
   "discord": {
     "token": "discordBotToken",
-    "channel": "channelId",
+    "channels": {
+      "guild": "discordChannelId",
+      "officer": "discordChannelId"
+    },
     "commandRole": "roleId",
     "ownerId": "ownerId",
     "prefix": "!",

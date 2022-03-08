@@ -16,6 +16,8 @@ class MessageHandler {
       return
     }
 
+    const destination = message.channelId == this.discord.app.config.discord.channels.guild ? 'guild' : 'officer'
+
     if (this.command.handle(message)) {
       return
     }
@@ -29,6 +31,7 @@ class MessageHandler {
       username: message.member?.displayName,
       message: this.stripDiscordContent(message.content),
       replyingTo: await this.fetchReply(message),
+      destination,
     })
   }
 
@@ -37,13 +40,13 @@ class MessageHandler {
    */
   async fetchReply(message) {
     try {
-      if (!message.reference || !message.reference.messageId) return null
+      if (!message.reference || !message.reference.messageId) return
 
       const reference = await message.channel.messages.fetch(message.reference.messageId)
 
       return reference.member ? reference.member.displayName : reference.author.username
     } catch (e) {
-      return null
+      return
     }
   }
 
@@ -68,7 +71,21 @@ class MessageHandler {
    * @param {import('discord.js').Message} message
    */
   shouldBroadcastMessage(message) {
-    return !message.author.bot && message.channel.id == this.discord.app.config.discord.channel && message.content && message.content.length > 0
+    return !message.author.bot && (this.isGuildMessage(message) || this.isOfficerMessage(message)) && message.content && message.content.length > 0
+  }
+
+  /**
+   * @param {import('discord.js').Message} message
+   */
+  isGuildMessage(message) {
+    return message.channel.id == this.discord.app.config.discord.channels.guild
+  }
+
+  /**
+   * @param {import('discord.js').Message} message
+   */
+  isOfficerMessage(message) {
+    return message.channel.id == this.discord.app.config.discord.channels.officer
   }
 }
 

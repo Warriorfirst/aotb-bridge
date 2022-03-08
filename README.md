@@ -136,8 +136,6 @@ The `authentication` option is the key which you can put in the header or query 
 
 ### Roadmap
 
-- [ ] Add support for officer chat
-  - Allocate a second discord channel to use for two way officer chat.
 - [ ] Switch to slash commands
   - Use discord integrations rather than a prefix based command system
 - [ ] Add proper feedback to commands
