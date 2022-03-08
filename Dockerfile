@@ -5,10 +5,6 @@ FROM node:14-alpine
 # Minecraft Server
 ENV SERVER_HOST=mc.hypixel.net
 ENV SERVER_PORT=25565
-# Minecraft Account
-ENV MINECRAFT_USERNAME=yourUsername
-ENV MINECRAFT_PASSWORD=yourPassword
-ENV MINECRAFT_ACCOUNT_TYPE=mojang
 # Discord Account
 ENV DISCORD_TOKEN=yourDiscordToken
 # Discord Settings
@@ -16,6 +12,12 @@ ENV DISCORD_CHANNEL=discordChannelId
 ENV DISCORD_COMMAND_ROLE=discordCommandRoleId
 ENV DISCORD_OWNER_ID=discordOwnerId
 ENV DISCORD_PREFIX=!
+ENV MESSAGE_MODE=bot
+# Express Settings
+ENV EXPRESS_ENABLED=false
+ENV EXPRESS_PORT=8880
+ENV EXPRESS_AUTHORIZATION=authorizationHeaderString
+
 
 # Docker set up instructions
 
