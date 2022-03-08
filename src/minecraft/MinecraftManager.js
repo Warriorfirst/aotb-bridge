@@ -43,10 +43,39 @@ class MinecraftManager extends CommunicationBridge {
    */
   onBroadcast({ username, message, replyingTo }) {
     this.app.log.broadcast(`${username}: ${message}`, 'Minecraft')
+    const prefix = `/gc ${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} `
+    const messages = this.splitMessage(prefix, message)
 
-    if (this.bot?.player !== undefined) {
-      this.bot.chat(`/gc ${replyingTo ? `${username} replying to ${replyingTo}:` : `${username}:`} ${message}`)
+    const sendNextMessage = () => {
+      const m = messages.shift()
+      if (m) {
+        this.bot?.chat(m)
+      } else {
+        clearInterval(interval)
+      }
     }
+
+    sendNextMessage()
+    const interval = setInterval(sendNextMessage, 100) // 100 seems consistent. 50 is too low.
+  }
+
+  /**
+   * @param {string} message
+   * @param {string} prefix
+   */
+  splitMessage(prefix, message) {
+    const lengthLimit = this.bot?.supportFeature('lessCharsInChat') ? 100 : 256
+    /** @type {string[]} */
+    const messages = []
+
+    message.split('\n').forEach(line => {
+      if (!line) return
+      for (let i = 0; i < line.length; i += lengthLimit - prefix.length) {
+        messages.push(prefix + line.substring(i, i + (lengthLimit - prefix.length)))
+      }
+    })
+
+    return messages
   }
 }
 
