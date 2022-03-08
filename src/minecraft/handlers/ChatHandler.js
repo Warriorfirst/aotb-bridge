@@ -33,7 +33,7 @@ class StateHandler extends EventHandler {
     const message = jsonMessage.toString().trim()
 
     if (this.isLobbyJoinMessage(message)) {
-      this.minecraft.app.log.minecraft('Sending Minecraft client to limbo')
+      this.minecraft.app.log.minecraft('SendingMinecraft client to limbo')
       return this.bot?.chat('/ac §')
     }
 
@@ -326,45 +326,45 @@ class StateHandler extends EventHandler {
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isJoinMessage(message) {
     return message.includes('joined the guild!') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isLeaveMessage(message) {
     return message.includes('left the guild!') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isKickMessage(message) {
     return message.includes('was kicked from the guild by') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isPromotionMessage(message) {
     return message.includes('was promoted from') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isDemotionMessage(message) {
     return message.includes('was demoted from') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isBlockedMessage(message) {
-    return message.includes('We blocked your comment') && !message.includes(':')
+    return message.startsWith('We blocked your comment')
   }
 
   /**
@@ -375,7 +375,7 @@ class StateHandler extends EventHandler {
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isNoPermission(message) {
     return (
@@ -395,21 +395,21 @@ class StateHandler extends EventHandler {
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isIncorrectUsage(message) {
     return message.includes('Invalid usage!') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isOnlineInvite(message) {
     return message.includes('You invited') && message.includes('to your guild. They have 5 minutes to accept.') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isOfflineInvite(message) {
     return (
@@ -420,7 +420,7 @@ class StateHandler extends EventHandler {
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isFailedInvite(message) {
     return (
@@ -433,73 +433,73 @@ class StateHandler extends EventHandler {
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isUserMuteMessage(message) {
     return message.includes('has muted') && message.includes('for') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isUserUnmuteMessage(message) {
     return message.includes('has unmuted') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isGuildMuteMessage(message) {
     return message.includes('has muted the guild chat for') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isGuildUnmuteMessage(message) {
     return message.includes('has unmuted the guild chat!') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isSetrankFail(message) {
     return message.includes("I couldn't find a rank by the name of ") && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isAlreadyMuted(message) {
     return message.includes('This player is already muted!') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isNotInGuild(message) {
     return message.includes(' is not in your guild!') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isLowestRank(message) {
     return message.includes("is already the lowest rank you've created!") && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isAlreadyHasRank(message) {
     return message.includes('They already have that rank!') && !message.includes(':')
   }
 
   /**
-   * @param {string | string[]} message
+   * @param {string} message
    */
   isTooFast(message) {
-    return message.includes('You are sending commands too fast! Please slow down.') && !message.includes(':')
+    return message.includes('You are sendingcommands too fast! Please slow down.') && !message.includes(':')
   }
 
   /**
