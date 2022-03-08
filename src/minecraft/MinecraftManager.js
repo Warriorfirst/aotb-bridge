@@ -51,6 +51,7 @@ class MinecraftManager extends CommunicationBridge {
       const m = messages.shift()
       if (m) {
         this.bot?.chat(m)
+        this.chatHandler.mostRecentChat = destination
       } else {
         clearInterval(interval)
       }

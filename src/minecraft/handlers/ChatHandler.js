@@ -2,6 +2,11 @@ const EventHandler = require('../../contracts/EventHandler')
 
 class StateHandler extends EventHandler {
   /**
+   * @type {'guild' | 'officer'}
+   */
+  mostRecentChat = 'guild'
+
+  /**
    * @param {import('../MinecraftManager')} minecraft
    * @param {import("../CommandHandler")} command
    */
@@ -122,11 +127,11 @@ class StateHandler extends EventHandler {
     if (this.isBlockedMessage(message)) {
       let blockedMsg = message.match(/".+"/g)?.at(0)?.slice(1, -1)
 
-      return this.minecraft.broadcastCleanEmbed({ message: `Message \`${blockedMsg}\` blocked by Hypixel.`, color: 0xdc143c, destination: 'guild' })
+      return this.minecraft.broadcastCleanEmbed({ message: `Message \`${blockedMsg}\` blocked by Hypixel.`, color: 0xdc143c, destination: this.mostRecentChat })
     }
 
     if (this.isRepeatMessage(message)) {
-      return this.minecraft.broadcastCleanEmbed({ message: `You cannot say the same message twice!`, color: 0xdc143c, destination: 'guild' })
+      return this.minecraft.broadcastCleanEmbed({ message: `You cannot say the same message twice!`, color: 0xdc143c, destination: this.mostRecentChat })
     }
 
     if (this.isNoPermission(message)) {
