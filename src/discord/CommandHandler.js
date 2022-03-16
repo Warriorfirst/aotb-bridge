@@ -36,12 +36,16 @@ class CommandHandler {
     }
 
     if ((command.name != 'help' && !this.isCommander(message.member)) || (command.name == 'override' && !this.isOwner(message.author))) {
-      return message.channel.send({
-        embeds: [{
-          description: `You don't have permission to do that.`,
-          color: 0xDC143C,
-        }],
-      })
+      return message.channel
+        .send({
+          embeds: [
+            {
+              description: `You don't have permission to do that.`,
+              color: 0xdc143c,
+            },
+          ],
+        })
+        .catch(this.discord.app.log.error)
     }
 
     this.discord.app.log.discord(`[${command.name}] ${message.content}`)

@@ -24,11 +24,29 @@ class StateHandler extends EventHandler {
     this.bot.on('login', () => this.onLogin())
     this.bot.on('end', reason => this.onEnd(reason))
     this.bot.on('kicked', reason => this.onKicked(reason))
+    this.bot.on('error', error => this.onError(error))
 
     process.on('SIGINT', async () => {
       await this.sendLogout('Process quit')
       process.exit(0)
     })
+  }
+
+  /**
+   * @param {Error} error
+   */
+  onError(error) {
+    this.minecraft.app.log.error(error.message)
+
+    this.minecraft.app.discord?.sendEvent(
+      new MessageEmbed({
+        author: { name: 'Bot Error' },
+        description: [`Name: \`${error.name}\``, `Mesage: \`${error.message}\``, `Trace: \`${error.stack}\``].join('\n'),
+      }),
+      'officer'
+    )
+
+    this.minecraft.bot = this.minecraft.createBotConnection() // Try again I guess
   }
 
   onLogin() {

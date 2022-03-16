@@ -140,6 +140,8 @@ The `authentication` option is the key which you can put in the header or query 
   - Use discord integrations rather than a prefix based command system
 - [ ] Add proper feedback to commands
   - Instead of replying `/g mute 23456789 30d has been executed`, wait for the hypixel response and reply to the command with the outcome
+- [ ] Fix errors
+  - Where tf is `Error: Failed to obtain profile data for Bridge, does the account own minecraft?` coming from?
 
 ## License
 

@@ -67,9 +67,10 @@ class HelpCommand extends DiscordCommand {
       })
       .then(helpMessage => {
         setTimeout(() => {
-          helpMessage.delete()
+          helpMessage.delete().catch(this.discord.app.log.error)
         }, 30000)
       })
+      .catch(this.discord.app.log.error)
   }
 }
 
