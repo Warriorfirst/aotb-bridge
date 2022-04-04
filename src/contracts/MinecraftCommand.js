@@ -27,6 +27,16 @@ class MinecraftCommand {
   }
 
   /**
+   * @param {string} user
+   * @param {string} message
+   */
+  reply(user, message) {
+    if (this.minecraft.bot?.player) {
+      this.minecraft.bot.chat(`/w ${user.trim()} ${message}`)
+    }
+  }
+
+  /**
    * @param {any} player
    * @param {any} message
    */

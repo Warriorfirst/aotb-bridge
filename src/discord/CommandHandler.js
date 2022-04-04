@@ -11,10 +11,20 @@ class CommandHandler {
     this.prefix = discord.app.config.discord.prefix
 
     this.commands = new Collection()
+
     let commandFiles = fs.readdirSync('./src/discord/commands').filter(file => file.endsWith('.js'))
     for (const file of commandFiles) {
       const command = new (require(`./commands/${file}`))(discord)
       this.commands.set(command.name, command)
+    }
+
+    if (fs.existsSync('./src/discord/commands/extras')) {
+      let extraCommandFiles = fs.readdirSync('./src/discord/commands/extras').filter(file => file.endsWith('.js'))
+      for (const file of extraCommandFiles) {
+        const command = new (require(`./commands/extras/${file}`))(discord)
+
+        this.commands.set(command.name, command)
+      }
     }
   }
 

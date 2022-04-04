@@ -4,3 +4,4 @@ yarn-error.log
 config.json
 /.vscode
 .idea
+**/commands/extras/

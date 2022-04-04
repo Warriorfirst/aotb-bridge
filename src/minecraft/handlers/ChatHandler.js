@@ -33,7 +33,7 @@ class StateHandler extends EventHandler {
     const message = jsonMessage.toString().trim()
 
     if (this.isLobbyJoinMessage(message)) {
-      this.minecraft.app.log.minecraft('SendingMinecraft client to limbo')
+      this.minecraft.app.log.minecraft('Sending Minecraft client to limbo')
       return this.bot?.chat('/ac §')
     }
 
@@ -242,6 +242,15 @@ class StateHandler extends EventHandler {
       return this.minecraft.broadcastCleanEmbed({ message: `Player \`${user}\` not found.`, color: 0xdc143c, destination: 'officer' })
     }
 
+    if (this.isDirectMessage(message)) {
+      const username = message.split(':')[0].split(' ').pop()
+      let command = message.split(': ').slice(1).join(': ')
+
+      if (!username || !message) return this.minecraft.app.log.warn(`Direct message ${message} could not have username/message extracted.`)
+      this.command.handle(username, command)
+      return
+    }
+
     if (!this.isGuildMessage(message) && !this.isOfficerMessage(message)) {
       return
     }
@@ -261,7 +270,7 @@ class StateHandler extends EventHandler {
     }
 
     const playerMessage = parts.join(':').trim()
-    if (playerMessage.length == 0 || this.command.handle(username, playerMessage)) {
+    if (playerMessage.length == 0) {
       return
     }
 
@@ -309,6 +318,13 @@ class StateHandler extends EventHandler {
    */
   isOfficerMessage(message) {
     return message.startsWith('Officer >') && message.includes(':')
+  }
+
+  /**
+   * @param {string} message
+   */
+  isDirectMessage(message) {
+    return message.startsWith('From ') && message.includes(':')
   }
 
   /**

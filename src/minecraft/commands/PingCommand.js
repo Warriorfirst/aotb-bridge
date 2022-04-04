@@ -17,7 +17,7 @@ class PingCommand extends MinecraftCommand {
    * @param {string} message
    */
   onCommand(username, message) {
-    this.send(`/w ${username} Pong!`)
+    this.reply(username, 'Pong!')
   }
 }
 

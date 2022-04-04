@@ -8,7 +8,6 @@ class CommandHandler {
   constructor(minecraft) {
     this.minecraft = minecraft
 
-    this.prefix = '!'
     this.commands = new Collection()
 
     let commandFiles = fs.readdirSync('./src/minecraft/commands').filter(file => file.endsWith('.js'))
@@ -17,6 +16,15 @@ class CommandHandler {
 
       this.commands.set(command.name, command)
     }
+
+    if (fs.existsSync('./src/minecraft/commands/extras')) {
+      let extraCommandFiles = fs.readdirSync('./src/minecraft/commands/extras').filter(file => file.endsWith('.js'))
+      for (const file of extraCommandFiles) {
+        const command = new (require(`./commands/extras/${file}`))(minecraft)
+
+        this.commands.set(command.name, command)
+      }
+    }
   }
 
   /**
@@ -24,23 +32,17 @@ class CommandHandler {
    * @param {string} message
    */
   handle(player, message) {
-    if (!message.startsWith(this.prefix)) {
-      return false
-    }
-
-    let args = message.slice(this.prefix.length).trim().split(/ +/)
+    let args = message.split(/ +/)
     let commandName = args.shift()?.toLowerCase()
 
-    if (!commandName) return false
+    if (!commandName) return
 
     let command = this.commands.get(commandName) || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
-    if (!command) return false
+    if (!command) return
 
     this.minecraft.app.log.minecraft(`${player} - [${command.name}] ${message}`)
     command.onCommand(player, message)
-
-    return true
   }
 }
 
