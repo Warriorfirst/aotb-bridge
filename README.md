@@ -122,6 +122,10 @@ The `port` option allows you to set what port you want to host your API on.
 
 The `authentication` option is the key which you can put in the header or query of your request. This allows security as only people with the authentication key will be able to successfully send requests to your API.
 
+#### Changing account
+
+By default the bot will login to the Microsoft account last used. To change the account remove the `.cache` directory and the next restart will prompt you to login again.
+
 ### Commands
 
 `< >` = Required arguments, `[ ]` Optional arguments

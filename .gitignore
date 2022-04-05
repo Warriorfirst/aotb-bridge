@@ -1,7 +1,17 @@
-/node_modules
+# Installed modules
+node_modules/
+
+# Log files
 npm-debug.log
 yarn-error.log
+
+# Private configuration
 config.json
-/.vscode
-.idea
+.cache/
+
+# Editor configuration
+.vscode/
+.idea/
+
+# Custom commands
 **/commands/extras/
