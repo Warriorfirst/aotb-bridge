@@ -210,6 +210,10 @@ class StateHandler extends EventHandler {
       return this.minecraft.broadcastCleanEmbed({ message: `This user is already muted!`, color: 0xdc143c, destination: 'officer' })
     }
 
+    if (this.isNotMuted(message)) {
+      return this.minecraft.broadcastCleanEmbed({ message: `This user is not muted!`, color: 0xdc143c, destination: 'officer' })
+    }
+
     if (this.isNotInGuild(message)) {
       let user = message
         .replace(/\[(.*?)\]/g, '')
@@ -488,6 +492,13 @@ class StateHandler extends EventHandler {
    */
   isAlreadyMuted(message) {
     return message.includes('This player is already muted!') && !message.includes(':')
+  }
+
+  /**
+   * @param {string} message
+   */
+  isNotMuted(message) {
+    return message.includes('This player is not muted!') && !message.includes(':')
   }
 
   /**
