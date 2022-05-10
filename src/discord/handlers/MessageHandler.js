@@ -1,7 +1,7 @@
 class MessageHandler {
   /**
    * @param {import('../DiscordManager')} discord
-   * @param {import('../CommandHandler')} command
+   * @param {import('./CommandHandler')} command
    */
   constructor(discord, command) {
     this.discord = discord

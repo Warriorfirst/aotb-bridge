@@ -8,7 +8,7 @@ class StateHandler extends EventHandler {
 
   /**
    * @param {import('../MinecraftManager')} minecraft
-   * @param {import("../CommandHandler")} command
+   * @param {import("./CommandHandler")} command
    */
   constructor(minecraft, command) {
     super()

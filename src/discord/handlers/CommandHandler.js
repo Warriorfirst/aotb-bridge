@@ -1,9 +1,10 @@
 const fs = require('fs')
 const { Collection } = require('discord.js')
+const ExecuteCommand = require('../commands/ExecuteCommand')
 
 class CommandHandler {
   /**
-   * @param {import('./DiscordManager')} discord
+   * @param {import('../DiscordManager')} discord
    */
   constructor(discord) {
     this.discord = discord
@@ -12,20 +13,12 @@ class CommandHandler {
 
     this.commands = new Collection()
 
-    let commandFiles = fs.readdirSync('./src/discord/commands').filter(file => file.endsWith('.js'))
-    for (const file of commandFiles) {
-      const command = new (require(`./commands/${file}`))(discord)
-      this.commands.set(command.name, command)
-    }
-
-    if (fs.existsSync('./src/discord/commands/extras')) {
-      let extraCommandFiles = fs.readdirSync('./src/discord/commands/extras').filter(file => file.endsWith('.js'))
-      for (const file of extraCommandFiles) {
-        const command = new (require(`./commands/extras/${file}`))(discord)
-
+    fs.readdirSync('./src/discord/commands')
+      .filter(file => file.endsWith('.js'))
+      .forEach(file => {
+        const command = new (require(`./commands/${file}`))(discord)
         this.commands.set(command.name, command)
-      }
-    }
+      })
   }
 
   /**
@@ -45,7 +38,7 @@ class CommandHandler {
       return false
     }
 
-    if ((command.name != 'help' && !this.isCommander(message.member)) || (command.name == 'override' && !this.isOwner(message.author))) {
+    if ((command.name != 'help' && !this.isCommander(message.member)) || (command.name == ExecuteCommand.name && !this.isOwner(message.author))) {
       return message.channel
         .send({
           embeds: [

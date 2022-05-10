@@ -3,28 +3,20 @@ const { Collection } = require('discord.js')
 
 class CommandHandler {
   /**
-   * @param {import('./MinecraftManager')} minecraft
+   * @param {import('../MinecraftManager')} minecraft
    */
   constructor(minecraft) {
     this.minecraft = minecraft
 
     this.commands = new Collection()
 
-    let commandFiles = fs.readdirSync('./src/minecraft/commands').filter(file => file.endsWith('.js'))
-    for (const file of commandFiles) {
-      const command = new (require(`./commands/${file}`))(minecraft)
-
-      this.commands.set(command.name, command)
-    }
-
-    if (fs.existsSync('./src/minecraft/commands/extras')) {
-      let extraCommandFiles = fs.readdirSync('./src/minecraft/commands/extras').filter(file => file.endsWith('.js'))
-      for (const file of extraCommandFiles) {
-        const command = new (require(`./commands/extras/${file}`))(minecraft)
+    fs.readdirSync('./src/minecraft/commands')
+      .filter(file => file.endsWith('.js'))
+      .forEach(file => {
+        const command = new (require(`./commands/${file}`))(minecraft)
 
         this.commands.set(command.name, command)
-      }
-    }
+      })
   }
 
   /**

@@ -12,6 +12,3 @@ config.json
 # Editor configuration
 .vscode/
 .idea/
-
-# Custom commands
-**/commands/extras/
