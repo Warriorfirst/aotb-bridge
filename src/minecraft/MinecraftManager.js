@@ -35,7 +35,7 @@ class MinecraftManager extends CommunicationBridge {
       auth: process.env['NODE_ENV'] == 'DEVELOPMENT' ? undefined : 'microsoft',
       version: process.env['MINECRAFT_VERSION'] ?? '1.16.5',
       hideErrors: true, // Prevent an insane amount of spam caused by watchdog, unfortunately this seems to be the only way
-      profilesFolder: './.cache', // Allow running multiple bridges at once with different accounts
+      profilesFolder: './.minecraft', // Allow running multiple bridges at once with different accounts
     })
   }
 
