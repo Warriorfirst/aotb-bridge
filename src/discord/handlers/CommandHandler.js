@@ -16,7 +16,7 @@ class CommandHandler {
     fs.readdirSync('./src/discord/commands')
       .filter(file => file.endsWith('.js'))
       .forEach(file => {
-        const command = new (require(`./commands/${file}`))(discord)
+        const command = new (require(`../commands/${file}`))(discord)
         this.commands.set(command.name, command)
       })
   }

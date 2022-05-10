@@ -13,7 +13,7 @@ class CommandHandler {
     fs.readdirSync('./src/minecraft/commands')
       .filter(file => file.endsWith('.js'))
       .forEach(file => {
-        const command = new (require(`./commands/${file}`))(minecraft)
+        const command = new (require(`../commands/${file}`))(minecraft)
 
         this.commands.set(command.name, command)
       })
