@@ -1,5 +1,7 @@
 # Installed modules
 node_modules/
+.yarn/
+.pnp.*
 
 # Log files
 npm-debug.log
@@ -7,7 +9,7 @@ yarn-error.log
 
 # Private configuration
 config.json
-.cache/
+.minecraft/
 
 # Editor configuration
 .vscode/
