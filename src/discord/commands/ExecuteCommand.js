@@ -23,12 +23,12 @@ class ExecuteCommand extends DiscordCommand {
     const command = args.join(' ')
 
     if (command.length == 0) {
-      return message.reply(`No command specified`)
+      return message.reply({ content: `No command specified`, allowedMentions: { parse: [] } })
     }
 
     this.sendMinecraftMessage(`/${command}`)
 
-    message.reply(`\`/${command}\` has been executed`)
+    message.reply({ content: `\`/${command}\` has been executed`, allowedMentions: { parse: [] } })
   }
 }
 

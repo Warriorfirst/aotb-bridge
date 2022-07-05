@@ -28,7 +28,7 @@ class RelogCommand extends DiscordCommand {
 
     let delay = parseInt(timestr)
     if (isNaN(delay)) {
-      return message.reply('Relog delay must be a number between 5 and 300!')
+      return message.reply({ content: 'Relog delay must be a number between 5 and 300!', allowedMentions: { parse: [] } })
     }
 
     delay = Math.min(Math.max(delay, 5), 300)
@@ -44,7 +44,10 @@ class RelogCommand extends DiscordCommand {
     this.discord.app.minecraft && (this.discord.app.minecraft.stateHandler.exactDelay = delay * 1000)
     this.discord.app.minecraft?.bot?.quit('Relogging')
 
-    message.reply(`The Minecraft account have disconnected from the server! Reconnecting in ${delay == 0 ? 5 : delay} seconds.`)
+    message.reply({
+      content: `The Minecraft account have disconnected from the server! Reconnecting in ${delay == 0 ? 5 : delay} seconds.`,
+      allowedMentions: { parse: [] },
+    })
   }
 }
 
