@@ -31,6 +31,7 @@ class StateHandler extends EventHandler {
    */
   onMessage(jsonMessage) {
     const message = jsonMessage.toString().trim()
+    console.log(message)
 
     if (this.isLobbyJoinMessage(message)) {
       this.minecraft.app.log.minecraft('Sending Minecraft client to limbo')

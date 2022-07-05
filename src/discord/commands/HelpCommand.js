@@ -12,12 +12,16 @@ class HelpCommand extends DiscordCommand {
     this.name = 'help'
     this.aliases = ['h', 'info']
     this.description = 'Shows this help menu'
+
+    /** @type {'everyone' | 'owner' | 'staff'} */
+    this.permission = 'everyone'
   }
 
   /**
    * @param {import('discord.js').Message} message
+   * @param {string[]} args
    */
-  onCommand(message) {
+  onCommand(message, args) {
     /** @type {string[]} */
     const discordCommands = []
     /** @type {string[]} */
@@ -31,8 +35,8 @@ class HelpCommand extends DiscordCommand {
       minecraftCommands.push(`\`${command.name}\`: ${command.description}`)
     })
 
-    message.channel
-      .send({
+    message
+      .reply({
         embeds: [
           {
             title: 'Help',
@@ -64,11 +68,7 @@ class HelpCommand extends DiscordCommand {
             timestamp: new Date(),
           },
         ],
-      })
-      .then(helpMessage => {
-        setTimeout(() => {
-          helpMessage.delete().catch(this.discord.app.log.error)
-        }, 30000)
+        allowedMentions: { parse: [] },
       })
       .catch(this.discord.app.log.error)
   }

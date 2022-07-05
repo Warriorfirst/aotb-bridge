@@ -10,14 +10,17 @@ class RelogCommand extends DiscordCommand {
     this.name = 'relog'
     this.aliases = ['r']
     this.description = 'Relogs the minecraft client after a given period of time'
+
+    /** @type {'everyone' | 'owner' | 'staff'} */
+    this.permission = 'owner'
   }
 
   /**
    * @param {import('discord.js').Message} message
+   * @param {string[]} args
    */
-  onCommand(message) {
-    let args = this.getArgs(message)
-    let timestr = args.pop()
+  onCommand(message, args) {
+    let timestr = args.shift()
 
     if (!timestr) {
       return this.relogWithDelay(message)

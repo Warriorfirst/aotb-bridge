@@ -1,20 +1,15 @@
 class DiscordCommand {
+  /** @type {'everyone' | 'owner' | 'staff'} */
+  permission = 'staff'
+
+  /** @type {string} */
+  name = 'Discord Command'
+
   /**
    * @param {import('../discord/DiscordManager')} discord
    */
   constructor(discord) {
     this.discord = discord
-  }
-
-  /**
-   * @param {import('discord.js').Message} message
-   */
-  getArgs(message) {
-    let args = message.content.split(' ')
-
-    args.shift()
-
-    return args
   }
 
   /**
@@ -28,8 +23,9 @@ class DiscordCommand {
 
   /**
    * @param {import('discord.js').Message} message
+   * @param {string[]} args
    */
-  onCommand(message) {
+  onCommand(message, args) {
     throw new Error('Command onCommand method is not implemented yet!')
   }
 }

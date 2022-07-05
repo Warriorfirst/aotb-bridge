@@ -1,6 +1,5 @@
 const fs = require('fs')
 const { Collection } = require('discord.js')
-const ExecuteCommand = require('../commands/ExecuteCommand')
 
 class CommandHandler {
   /**
@@ -32,27 +31,49 @@ class CommandHandler {
     let args = message.content.slice(this.prefix.length).trim().split(/ +/)
     let commandName = args.shift()?.toLowerCase()
 
+    /** @type {import('../../contracts/DiscordCommand')} */
     let command = this.commands.get(commandName) || this.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
     if (!command) {
       return false
     }
 
-    if ((command.name != 'help' && !this.isCommander(message.member)) || (command.name == ExecuteCommand.name && !this.isOwner(message.author))) {
-      return message.channel
-        .send({
-          embeds: [
-            {
-              description: `You don't have permission to do that.`,
-              color: 0xdc143c,
-            },
-          ],
-        })
-        .catch(this.discord.app.log.error)
+    switch (command.permission) {
+      case 'everyone':
+        break
+
+      case 'owner':
+        if (!this.isOwner(message.author)) {
+          return message.channel
+            .send({
+              embeds: [
+                {
+                  description: [`You don't have permission to do that.`, `Required user: <@!${this.discord.app.config.discord.ownerId}>`].join('\n'),
+                  color: 0xdc143c,
+                },
+              ],
+            })
+            .catch(this.discord.app.log.error)
+        }
+
+      case 'staff':
+      default:
+        if (!this.isCommander(message.member)) {
+          return message.channel
+            .send({
+              embeds: [
+                {
+                  description: [`You don't have permission to do that.`, `Required role: <@&${this.discord.app.config.discord.commandRole}>`].join('\n'),
+                  color: 0xdc143c,
+                },
+              ],
+            })
+            .catch(this.discord.app.log.error)
+        }
     }
 
     this.discord.app.log.discord(`[${command.name}] ${message.content}`)
-    command.onCommand(message)
+    command.onCommand(message, args)
 
     return true
   }

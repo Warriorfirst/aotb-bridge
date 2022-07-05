@@ -14,9 +14,9 @@ class PromoteCommand extends DiscordCommand {
 
   /**
    * @param {import('discord.js').Message} message
+   * @param {string[]} args
    */
-  onCommand(message) {
-    let args = this.getArgs(message)
+  onCommand(message, args) {
     let user = args.shift()
 
     this.sendMinecraftMessage(`/g promote ${user ? user : ''}`)
