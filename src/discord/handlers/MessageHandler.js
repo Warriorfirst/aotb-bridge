@@ -22,14 +22,15 @@ class MessageHandler {
       return
     }
 
-    const content = this.stripDiscordContent(message.content).trim()
+    const content = message.cleanContent.trim()
+
     if (content.length == 0) {
       return
     }
 
     this.discord.broadcastMessage({
       username: message.member?.displayName,
-      message: this.stripDiscordContent(message.content),
+      message: content,
       replyingTo: await this.fetchReply(message),
       destination,
     })
@@ -48,23 +49,6 @@ class MessageHandler {
     } catch (e) {
       return
     }
-  }
-
-  /**
-   * @param {string} message
-   */
-  stripDiscordContent(message) {
-    return message
-      .replace(/<[@|#|!|&]{1,2}(\d+){16,}>/g, '\n')
-      .replace(/<:\w+:(\d+){16,}>/g, '\n')
-      .replace(/[^\p{L}\p{N}\p{P}\p{Z}\+$\^\|~`<>]/gu, '\n')
-      .split('\n')
-      .map((/** @type {string} */ part) => {
-        part = part.trim()
-
-        return part.length == 0 ? '' : part + ' '
-      })
-      .join('')
   }
 
   /**
