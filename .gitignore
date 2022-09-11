@@ -1,7 +1,10 @@
 # Installed modules
-node_modules/
-.yarn/
+.yarn/*
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/releases
 .pnp.*
+node_modules
 
 # Log files
 npm-debug.log
