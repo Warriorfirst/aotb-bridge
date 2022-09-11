@@ -37,6 +37,7 @@ class DiscordManager extends CommunicationBridge {
         intents: [
           Discord.IntentsBitField.Flags.Guilds,
           Discord.IntentsBitField.Flags.GuildMessages,
+          Discord.IntentsBitField.Flags.MessageContent,
           Discord.IntentsBitField.Flags.GuildIntegrations,
           Discord.IntentsBitField.Flags.GuildWebhooks,
         ],

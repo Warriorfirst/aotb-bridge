@@ -16,6 +16,8 @@ class MessageHandler {
       return
     }
 
+    console.log(message.content)
+
     const destination = message.channelId == this.discord.app.config.discord.channels.guild ? 'guild' : 'officer'
 
     if (this.command.handle(message)) {
@@ -53,7 +55,13 @@ class MessageHandler {
    * @param {import('discord.js').Message} message
    */
   shouldBroadcastMessage(message) {
-    return !message.author.bot && (this.isGuildMessage(message) || this.isOfficerMessage(message)) && message.content && message.content.length > 0
+    return (
+      !message.author.bot &&
+      !message.webhookId &&
+      (this.isGuildMessage(message) || this.isOfficerMessage(message)) &&
+      message.content &&
+      message.content.length > 0
+    )
   }
 
   /**
