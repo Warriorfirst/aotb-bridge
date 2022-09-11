@@ -33,7 +33,14 @@ class DiscordManager extends CommunicationBridge {
 
   connect() {
     return new Promise(resolve => {
-      this.client = new Discord.Client({ intents: ['Guilds', 'GuildMessages', 'GuildIntegrations', 'GuildWebhooks'] })
+      this.client = new Discord.Client({
+        intents: [
+          Discord.IntentsBitField.Flags.Guilds,
+          Discord.IntentsBitField.Flags.GuildMessages,
+          Discord.IntentsBitField.Flags.GuildIntegrations,
+          Discord.IntentsBitField.Flags.GuildWebhooks,
+        ],
+      })
 
       this.client.on('ready', () => this.stateHandler.onReady().then(resolve))
       this.client.on('messageCreate', message => this.messageHandler.onMessage(message))
