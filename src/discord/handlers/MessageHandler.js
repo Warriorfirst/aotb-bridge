@@ -22,7 +22,7 @@ class MessageHandler {
       return
     }
 
-    const content = cleanContent(message.content, message.channel).replace(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '')
+    const content = cleanContent(message.content, message.channel).replace(/[^a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '')
 
     if (content.length) {
       this.discord.broadcastMessage({
