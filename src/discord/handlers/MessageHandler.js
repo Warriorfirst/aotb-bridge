@@ -22,18 +22,16 @@ class MessageHandler {
       return
     }
 
-    const content = message.cleanContent.trim()
+    const content = cleanContent(message.content, message.channel).replace(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '')
 
-    if (content.length == 0) {
-      return
+    if (content.length) {
+      this.discord.broadcastMessage({
+        username: message.member?.displayName,
+        message: content,
+        replyingTo: await this.fetchReply(message),
+        destination,
+      })
     }
-
-    this.discord.broadcastMessage({
-      username: message.member?.displayName,
-      message: content,
-      replyingTo: await this.fetchReply(message),
-      destination,
-    })
   }
 
   /**
@@ -74,3 +72,40 @@ class MessageHandler {
 }
 
 module.exports = MessageHandler
+
+/**
+ * @param {string} str
+ * @param {import('discord.js').Channel} channel
+ */
+function cleanContent(str, channel) {
+  return str.replace(/<(@[!&]?|#|a?:\w+?:)(\d{17,19})>/g, (match, type, id) => {
+    switch (type) {
+      case '@':
+      case '@!': {
+        if (!channel.isDMBased()) {
+          const member = channel.guild?.members.cache.get(id)
+          if (member) {
+            return `@${member.displayName}`
+          }
+        }
+
+        const user = channel.client.users.cache.get(id)
+        return user ? `@${user.username}` : match
+      }
+      case '@&': {
+        if (channel.isDMBased()) return match
+        const role = channel.guild.roles.cache.get(id)
+        return role ? `@${role.name}` : match
+      }
+      case '#': {
+        if (channel.isDMBased()) return match
+        const mentionedChannel = channel.client.channels.cache.get(id)
+        return mentionedChannel && !mentionedChannel.isDMBased() ? `#${mentionedChannel.name}` : match
+      }
+      default: {
+        if (type.match(/^:\w+?:$/)) return type
+        return match
+      }
+    }
+  })
+}

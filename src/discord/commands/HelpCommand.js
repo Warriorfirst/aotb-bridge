@@ -61,11 +61,11 @@ class HelpCommand extends DiscordCommand {
                 ].join('\n'),
               },
             ],
-            color: message.guild?.me?.displayHexColor,
+            color: message.guild?.members.me?.displayColor,
             footer: {
               text: 'Made by Senither and neyoa ❤',
             },
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
           },
         ],
         allowedMentions: { parse: [] },

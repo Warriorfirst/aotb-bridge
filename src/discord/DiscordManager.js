@@ -33,7 +33,7 @@ class DiscordManager extends CommunicationBridge {
 
   connect() {
     return new Promise(resolve => {
-      this.client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS'] })
+      this.client = new Discord.Client({ intents: ['Guilds', 'GuildMessages', 'GuildIntegrations', 'GuildWebhooks'] })
 
       this.client.on('ready', () => this.stateHandler.onReady().then(resolve))
       this.client.on('messageCreate', message => this.messageHandler.onMessage(message))
@@ -52,13 +52,13 @@ class DiscordManager extends CommunicationBridge {
           {
             description: message,
             color: colour,
-            timestamp: Date.now(),
+            timestamp: new Date().toISOString(),
             footer: {
               text: guildRank,
             },
             author: {
               name: username,
-              iconURL: 'https://www.mc-heads.net/avatar/' + username,
+              icon_url: 'https://www.mc-heads.net/avatar/' + username,
             },
           },
         ],
@@ -81,7 +81,7 @@ class DiscordManager extends CommunicationBridge {
   }
 
   /**
-   * @param {import('discord.js').MessageEmbed} embed
+   * @param {import('discord.js').APIEmbed} embed
    * @param {'guild' | 'officer' | 'both'} destination
    */
   async sendEvent(embed, destination) {
@@ -119,10 +119,10 @@ class DiscordManager extends CommunicationBridge {
     this.app.log.broadcast(message, 'Event')
 
     this.sendEvent(
-      new Discord.MessageEmbed({
+      {
         color: color,
         description: message,
-      }),
+      },
       destination
     )
   }
@@ -134,20 +134,20 @@ class DiscordManager extends CommunicationBridge {
     this.app.log.broadcast(message, 'Event')
 
     this.sendEvent(
-      new Discord.MessageEmbed({
+      {
         color: color,
         author: {
           name: title,
-          iconURL: icon,
+          icon_url: icon,
         },
         description: message,
-      }),
+      },
       destination
     )
   }
 
   /**
-   * @param {{username: string; message: string; color: import('discord.js').ColorResolvable}} Content
+   * @param {{username: string; message: string; color?: number}} Content
    */
   onPlayerToggle({ username, message, color }) {
     this.app.log.broadcast(username + ' ' + message, 'Event')
@@ -158,8 +158,8 @@ class DiscordManager extends CommunicationBridge {
           ?.send({
             embeds: [
               {
-                color: color,
-                timestamp: new Date(),
+                color,
+                timestamp: new Date().toISOString(),
                 author: {
                   name: `${username} ${message}`,
                   icon_url: 'https://www.mc-heads.net/avatar/' + username,

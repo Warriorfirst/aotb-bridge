@@ -1,4 +1,4 @@
-const { TextChannel } = require('discord.js')
+const { TextChannel, ActivityType } = require('discord.js')
 
 class StateHandler {
   /**
@@ -10,7 +10,7 @@ class StateHandler {
 
   async onReady() {
     this.discord.app.log.discord('Client ready, logged in as ' + this.discord.client?.user?.tag)
-    this.discord.client?.user?.setActivity('Guild Chat', { type: 'WATCHING' })
+    this.discord.client?.user?.setActivity('Guild Chat', { type: ActivityType.Watching })
 
     const guildChannel = await this.discord.client?.channels.fetch(this.discord.app.config.discord.channels.guild)
     const officerChannel = await this.discord.client?.channels.fetch(this.discord.app.config.discord.channels.officer)
@@ -47,7 +47,8 @@ class StateHandler {
     if (webhooks.first()) {
       return webhooks.first()
     } else {
-      var res = await channel.createWebhook(this.discord.client?.user?.username ?? 'Chat Bridge', {
+      var res = await channel.createWebhook({
+        name: this.discord.client?.user?.username ?? 'Chat Bridge',
         avatar: this.discord.client?.user?.avatarURL() ?? undefined,
       })
       return res
